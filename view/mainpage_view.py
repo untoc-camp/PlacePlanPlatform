@@ -1,7 +1,7 @@
 import justpy as jp
 
 from component.color import Color
-import main
+
 
 def MainPageView():
     color = Color()
