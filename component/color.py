@@ -1,4 +1,4 @@
-class Color:
+class MainColors:
     def __init__(self):
         self.LightBlueColor = "color: #ADD7F6"
         self.MainColor = "color: #87BFFF"
