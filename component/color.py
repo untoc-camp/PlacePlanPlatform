@@ -1,7 +1,7 @@
 class MainColors:
     def __init__(self):
-        self.LightBlueColor = "color: #ADD7F6"
-        self.MainColor = "color: #87BFFF"
+        self.LightBlueColor = "#ADD7F6"
+        self.MainColor = "#87BFFF"
         self.DarkBlueColor = "color: #3F8EFC"
         self.PointColor = "color: #2667FF"
         
