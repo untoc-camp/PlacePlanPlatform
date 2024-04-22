@@ -13,6 +13,12 @@ class CalendarComponent:
         self.calendar = self._get_calendar(self.today.year, self.today.month)
         self.month_name = calendar.month_name[self.today.month]
         self.color = MainColors()
+
+        self.default_class = 'p-2 w-10 h-10 text-center items-center justify-center text-white'
+        self.rectangle_style = f'position: relative; background-color: {self.color.LightBlueColor}; width: 40px; height: 40px;'
+        self.left_cricle_style = f'position: relative; border-radius: 9999px; background-color: {self.color.LightBlueColor}; width: 40px; height: 20px; border-top-right-radius: 20px; border-bottom-right-radius: 20px;'
+        self.right_cricle_style = f'position: relative; border-radius: 9999px; background-color: {self.color.LightBlueColor}; width: 40px; height: 20px; border-top-left-radius: 20px; border-bottom-left-radius: 20px;'
+        self.background_circle_style = f'position: relative; border-radius: 9999px; background-color: {self.color.LightBlueColor}; width: 40px; height: 40px;'
     def _get_calendar(self, year, month):
         calendar_list = []
         cal = calendar.monthcalendar(year, month)
@@ -41,59 +47,99 @@ class CalendarComponent:
             
             
             if right_clicked_date in self.select_dates and left_clicked_date in self.select_dates and current_index > 0 and current_index < 6:
-                msg.target.set_class = 'p-2 w-10 h-10 text-center items-center justify-center text-white'
-                msg.target.style = f'background-color: {self.color.LightBlueColor}; width: 40px; height: 20px;'
+                msg.target.set_class = self.default_class
+                msg.target.style = self.rectangle_style
                 
                 left_sibling = parent_row.components[current_index - 1]
-                if left_sibling.style == f'position: relative; border-radius: 9999px; background-color: {self.color.LightBlueColor}; width: 40px; height: 40px;':
-                    left_sibling.style =  f'position: relative; border-radius: 9999px; background-color: {self.color.LightBlueColor}; width: 40px; height: 20px; border-top-right-radius: 20px; border-bottom-right-radius: 20px;'
+                if left_sibling.style == self.background_circle_style:
+                    left_sibling.style =  self.left_cricle_style
                 else :
-                    left_sibling.style = f'position: relative; background-color: {self.color.LightBlueColor}; width: 40px; height: 20px;'
+                    left_sibling.style = self.rectangle_style
+                    left_sibling.remove_component(left_sibling.components[0])
                 
                 
                 right_sibling = parent_row.components[current_index + 1]
-                if right_sibling.style == f'position: relative; border-radius: 9999px; background-color: {self.color.LightBlueColor}; width: 40px; height: 40px;':
-                    right_sibling.style =  f'position: relative; border-radius: 9999px; background-color: {self.color.LightBlueColor}; width: 40px; height: 20px; border-top-left-radius: 20px; border-bottom-left-radius: 20px;'
+                if right_sibling.style == self.background_circle_style:
+                    right_sibling.style = self.right_cricle_style
                 else :
-                    right_sibling.style = f'position: relative; background-color: {self.color.LightBlueColor}; width: 40px; height: 20px;'
+                    right_sibling.style = self.rectangle_style
+                    right_sibling.remove_component(right_sibling.components[0])
                 
                 # 다음 날짜 처리
             elif left_clicked_date in self.select_dates and current_index > 0:
-                msg.target.set_class = 'p-2 w-10 h-10 text-center items-center justify-center text-white'
-                msg.target.style = f'border-radius: 9999px; background-color: {self.color.LightBlueColor}; width: 40px; height: 20px; border-top-left-radius: 20px; border-bottom-left-radius: 20px;'
+                msg.target.set_class = self.default_class
+                msg.target.style = self.right_cricle_style
                 left_sibling = parent_row.components[current_index - 1]
-                if left_sibling.style == f'position: relative; border-radius: 9999px; background-color: {self.color.LightBlueColor}; width: 40px; height: 40px;':
-                    left_sibling.style =  f'position: relative; border-radius: 9999px; background-color: {self.color.LightBlueColor}; width: 40px; height: 20px; border-top-right-radius: 20px; border-bottom-right-radius: 20px;'
+                if left_sibling.style == self.background_circle_style:
+                    left_sibling.style =  self.left_cricle_style
                 else :
-                    left_sibling.style = f'position: relative; background-color: {self.color.LightBlueColor}; width: 40px; height: 20px;'
-                
+                    left_sibling.style = self.rectangle_style
+                    left_sibling.remove_component(left_sibling.components[0])
+
+                msg.target.add(jp.Div(text=msg.target.text, classes="absolute p-2 w-10 h-10 text-center items-center justify-center text-white", style=f'z-index: 2; background-color: {self.color.MainColor}; border-radius: 9999px; top: 50%; left: 50%; transform: translate(-50%, -50%);'))
+
             elif right_clicked_date in self.select_dates and current_index < 6:
-                msg.target.set_class = 'p-2 w-10 h-10 text-center items-center justify-center text-white'
-                msg.target.style = f'border-radius: 9999px; background-color: {self.color.LightBlueColor}; width: 40px; height: 20px; border-top-right-radius: 20px; border-bottom-right-radius: 20px;'
+                msg.target.set_class = self.default_class
+                msg.target.style = self.left_cricle_style
                 right_sibling = parent_row.components[current_index + 1]
-                if right_sibling.style == f'position: relative; border-radius: 9999px; background-color: {self.color.LightBlueColor}; width: 40px; height: 40px;':
-                    right_sibling.style =  f'position: relative; border-radius: 9999px; background-color: {self.color.LightBlueColor}; width: 40px; height: 20px; border-top-left-radius: 20px; border-bottom-left-radius: 20px;'
+                if right_sibling.style == self.background_circle_style:
+                    right_sibling.style =  self.right_cricle_style
                 else :
-                    right_sibling.style = f'position: relative; background-color: {self.color.LightBlueColor}; width: 40px; height: 20px;'
-                
+                    right_sibling.style = self.rectangle_style
+                    right_sibling.remove_component(right_sibling.components[0])
+                msg.target.add(jp.Div(text=msg.target.text, classes="absolute p-2 w-10 h-10 text-center items-center justify-center text-white", style=f'z-index: 2; background-color: {self.color.MainColor}; border-radius: 9999px; top: 50%; left: 50%; transform: translate(-50%, -50%);'))
+
             else:
-                msg.target.set_class = 'p-2 w-10 h-10 text-center items-center justify-center text-white'
-                msg.target.style = f'position: relative; border-radius: 9999px; background-color: {self.color.LightBlueColor}; width: 40px; height: 40px;'  # width와 height를 조정하여 원 모양의 크기를 조절
+                msg.target.set_class = self.default_class
+                msg.target.style = self.background_circle_style  # width와 height를 조정하여 원 모양의 크기를 조절
                 # 원 모양 추가: 원을 중앙에 배치하고, 텍스트를 위로 오게 하려면, 원을 배경으로 하고 텍스트를 전면에 배치
                 msg.target.add(jp.Div(text=msg.target.text, classes="absolute p-2 w-10 h-10 text-center items-center justify-center text-white", style=f'z-index: 2; background-color: {self.color.MainColor}; border-radius: 9999px; top: 50%; left: 50%; transform: translate(-50%, -50%);'))
 
         else:
+            left_sibling_text = str(int(msg.target.text) - 1)
+            right_sibling_text = str(int(msg.target.text) + 1)
             self.select_dates.remove(clicked_date)
             msg.target.classes = 'w-10 h-10 text-center items-center p-2 bg-white'
             msg.target.style = ""
+            print(msg)
+            if msg.target.components:
+                msg.target.remove_component(msg.target.components[0])
+
             if left_clicked_date in self.select_dates and right_clicked_date in self.select_dates and current_index > 0 and current_index < 6:
                 left_sibling = parent_row.components[current_index - 1]
-                
-                if left_sibling.style == f'position: relative; border-radius: 9999px; background-color: {self.color.LightBlueColor}; width: 40px; height: 20px; border-top-right-radius: 20px; border-bottom-right-radius: 20px;':
-                    left_sibling.style = f'position: relative; background-color: {self.color.LightBlueColor}; width: 40px; height: 20px;'
-            # 원 모양 제거
-            for child in list(msg.target.components):  # components 리스트를 복사해서 반복
-                msg.target.remove_component(child)
+                if left_sibling.style == self.left_cricle_style:
+                    print("!!!")
+                    left_sibling.style = self.background_circle_style
+                else:
+                    left_sibling.style = self.right_cricle_style
+                left_sibling.add(jp.Div(text=left_sibling_text, classes="absolute p-2 w-10 h-10 text-center items-center justify-center text-white", style=f'z-index: 2; background-color: {self.color.MainColor}; border-radius: 9999px; top: 50%; left: 50%; transform: translate(-50%, -50%);'))
+
+                right_sibling = parent_row.components[current_index + 1]
+                if right_sibling.style == self.right_cricle_style:
+                    right_sibling.style = self.background_circle_style
+                else:
+                    right_sibling.style = self.left_cricle_style
+                right_sibling.add(jp.Div(text=right_sibling_text , classes="absolute p-2 w-10 h-10 text-center items-center justify-center text-white", style=f'z-index: 2; background-color: {self.color.MainColor}; border-radius: 9999px; top: 50%; left: 50%; transform: translate(-50%, -50%);'))                
+            
+            elif left_clicked_date in self.select_dates and current_index > 0:
+                left_sibling = parent_row.components[current_index - 1]
+                if left_sibling.style == self.left_cricle_style:
+                    left_sibling.style = self.background_circle_style
+                else:
+                    left_sibling.style = self.rectangle_style
+                left_sibling.add(jp.Div(text=left_sibling_text, classes="absolute p-2 w-10 h-10 text-center items-center justify-center text-white", style=f'z-index: 2; background-color: {self.color.MainColor}; border-radius: 9999px; top: 50%; left: 50%; transform: translate(-50%, -50%);'))
+
+
+            elif right_clicked_date in self.select_dates and current_index < 6:
+                right_sibling = parent_row.components[current_index + 1]
+                if right_sibling.style == self.right_cricle_style:
+                    right_sibling.style = self.background_circle_style
+                else:
+                    right_sibling.style = self.rectangle_style
+                right_sibling.add(jp.Div(text=right_sibling_text, classes="absolute p-2 w-10 h-10 text-center items-center justify-center text-white", style=f'z-index: 2; background-color: {self.color.MainColor}; border-radius: 9999px; top: 50%; left: 50%; transform: translate(-50%, -50%);'))
+            
+
+
         print(self.select_dates)
 
 
