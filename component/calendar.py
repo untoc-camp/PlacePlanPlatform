@@ -3,6 +3,7 @@ import datetime
 import calendar
 
 from component.color import MainColors
+from component.font import Font
 
 class CalendarComponent:
     def __init__(self):
@@ -13,12 +14,16 @@ class CalendarComponent:
         self.calendar = self._get_calendar(self.today.year, self.today.month)
         self.month_name = calendar.month_name[self.today.month]
         self.color = MainColors()
-
+        self.font = Font()
+        self.div = None
+        self.calendar_div = None  # 달력이 표시될 div를 저장하기 위한 변수
+        
         self.default_class = 'p-2 w-10 h-10 text-center items-center justify-center text-white'
         self.rectangle_style = f'position: relative; background-color: {self.color.LightBlueColor}; width: 40px; height: 40px;'
-        self.left_cricle_style = f'position: relative; border-radius: 9999px; background-color: {self.color.LightBlueColor}; width: 40px; height: 20px; border-top-right-radius: 20px; border-bottom-right-radius: 20px;'
-        self.right_cricle_style = f'position: relative; border-radius: 9999px; background-color: {self.color.LightBlueColor}; width: 40px; height: 20px; border-top-left-radius: 20px; border-bottom-left-radius: 20px;'
-        self.background_circle_style = f'position: relative; border-radius: 9999px; background-color: {self.color.LightBlueColor}; width: 40px; height: 40px;'
+        self.left_cricle_style = f'position: relative;  background-color: {self.color.LightBlueColor}; width: 40px; height: 20px; border-top-left-radius: 20px; border-bottom-left-radius: 20px;'
+        self.right_cricle_style = f'position: relative; background-color: {self.color.LightBlueColor}; width: 40px; height: 20px; border-top-right-radius: 20px; border-bottom-right-radius: 20px;'
+        self.background_circle_style = f'position: relative; background-color: {self.color.LightBlueColor}; width: 40px; height: 40px; border-top-left-radius: 20px; border-bottom-left-radius: 20px; border-top-right-radius: 20px; border-bottom-right-radius: 20px;'
+    
     def _get_calendar(self, year, month):
         calendar_list = []
         cal = calendar.monthcalendar(year, month)
@@ -55,15 +60,16 @@ class CalendarComponent:
                     left_sibling.style =  self.left_cricle_style
                 else :
                     left_sibling.style = self.rectangle_style
-                    left_sibling.remove_component(left_sibling.components[0])
-                
-                
+                    for components in left_sibling.components:
+                        left_sibling.remove_component(components)
+
                 right_sibling = parent_row.components[current_index + 1]
                 if right_sibling.style == self.background_circle_style:
                     right_sibling.style = self.right_cricle_style
                 else :
                     right_sibling.style = self.rectangle_style
-                    right_sibling.remove_component(right_sibling.components[0])
+                    for components in right_sibling.components:
+                        right_sibling.remove_component(components)
                 
                 # 다음 날짜 처리
             elif left_clicked_date in self.select_dates and current_index > 0:
@@ -74,7 +80,8 @@ class CalendarComponent:
                     left_sibling.style =  self.left_cricle_style
                 else :
                     left_sibling.style = self.rectangle_style
-                    left_sibling.remove_component(left_sibling.components[0])
+                    for components in left_sibling.components:
+                        left_sibling.remove_component(components)
 
                 msg.target.add(jp.Div(text=msg.target.text, classes="absolute p-2 w-10 h-10 text-center items-center justify-center text-white", style=f'z-index: 2; background-color: {self.color.MainColor}; border-radius: 9999px; top: 50%; left: 50%; transform: translate(-50%, -50%);'))
 
@@ -86,13 +93,14 @@ class CalendarComponent:
                     right_sibling.style =  self.right_cricle_style
                 else :
                     right_sibling.style = self.rectangle_style
-                    right_sibling.remove_component(right_sibling.components[0])
+                    for components in right_sibling.components:
+                        right_sibling.remove_component(components)
                 msg.target.add(jp.Div(text=msg.target.text, classes="absolute p-2 w-10 h-10 text-center items-center justify-center text-white", style=f'z-index: 2; background-color: {self.color.MainColor}; border-radius: 9999px; top: 50%; left: 50%; transform: translate(-50%, -50%);'))
 
             else:
                 msg.target.set_class = self.default_class
-                msg.target.style = self.background_circle_style  # width와 height를 조정하여 원 모양의 크기를 조절
-                # 원 모양 추가: 원을 중앙에 배치하고, 텍스트를 위로 오게 하려면, 원을 배경으로 하고 텍스트를 전면에 배치
+                msg.target.style = self.background_circle_style  
+
                 msg.target.add(jp.Div(text=msg.target.text, classes="absolute p-2 w-10 h-10 text-center items-center justify-center text-white", style=f'z-index: 2; background-color: {self.color.MainColor}; border-radius: 9999px; top: 50%; left: 50%; transform: translate(-50%, -50%);'))
 
         else:
@@ -101,14 +109,14 @@ class CalendarComponent:
             self.select_dates.remove(clicked_date)
             msg.target.classes = 'w-10 h-10 text-center items-center p-2 bg-white'
             msg.target.style = ""
-            print(msg)
-            if msg.target.components:
-                msg.target.remove_component(msg.target.components[0])
-
+            print("msg에 대한 값입니다", msg.target.components)
+            
+            msg.target.components = []
+            
             if left_clicked_date in self.select_dates and right_clicked_date in self.select_dates and current_index > 0 and current_index < 6:
                 left_sibling = parent_row.components[current_index - 1]
+                print("left_sibiling 값", left_sibling)
                 if left_sibling.style == self.left_cricle_style:
-                    print("!!!")
                     left_sibling.style = self.background_circle_style
                 else:
                     left_sibling.style = self.right_cricle_style
@@ -126,7 +134,7 @@ class CalendarComponent:
                 if left_sibling.style == self.left_cricle_style:
                     left_sibling.style = self.background_circle_style
                 else:
-                    left_sibling.style = self.rectangle_style
+                    left_sibling.style = self.right_cricle_style
                 left_sibling.add(jp.Div(text=left_sibling_text, classes="absolute p-2 w-10 h-10 text-center items-center justify-center text-white", style=f'z-index: 2; background-color: {self.color.MainColor}; border-radius: 9999px; top: 50%; left: 50%; transform: translate(-50%, -50%);'))
 
 
@@ -135,19 +143,37 @@ class CalendarComponent:
                 if right_sibling.style == self.right_cricle_style:
                     right_sibling.style = self.background_circle_style
                 else:
-                    right_sibling.style = self.rectangle_style
+                    right_sibling.style = self.left_cricle_style
                 right_sibling.add(jp.Div(text=right_sibling_text, classes="absolute p-2 w-10 h-10 text-center items-center justify-center text-white", style=f'z-index: 2; background-color: {self.color.MainColor}; border-radius: 9999px; top: 50%; left: 50%; transform: translate(-50%, -50%);'))
             
 
 
         print(self.select_dates)
 
+    def prev_month(self, msg):
+        self.select_month -= 1
+        if self.select_month == 0:
+            self.select_month = 12
+            self.select_year -= 1
+        self.update_calendar()  # 업데이트된 달력을 표시
 
-
+    # 다음 달로 이동하는 함수
+    def next_month(self, msg):
+        self.select_month += 1
+        if self.select_month == 13:
+            self.select_month = 1
+            self.select_year += 1
+        self.update_calendar()  # 업데이트된 달력을 표시
+        
     def show_calendar(self, wp):
-        div = jp.Div(classes='')
-        div_calendar = jp.Div(classes='bg-white p-4 shadow-lg rounded-lg')
-        div_text = jp.Div(text=f'{self.select_year}년 {self.select_month}월', classes='text-xl font-bold mb-4')
+
+        self.wp = wp
+        if self.div:
+            self.div.delete()  # 이전 달력이 있으면 삭제
+        self.div = jp.Div(classes = '')  # 새로운 div 생성
+        div = self.div
+        div_calendar = jp.Div(classes='bg-white p-4 shadow-lg rounded-lg', style='width: 320px;')
+        div_text = jp.Div(text=f'{self.select_year}년 {self.select_month}월', classes = self.font.Heading4_Bold)
         clicked_date = jp.Div(text='', classes='text-lg font-semibold text-blue-500')
         table = jp.Table(classes='table-fixed border-collapse border border-gray-300')
         thead = jp.Thead()
@@ -168,13 +194,76 @@ class CalendarComponent:
                     row.add(jp.Td(text='', classes='p-2'))
                 else:
                     date_str = str(day)[6:]
-                    date = jp.Td(text=date_str, classes='w-10 h-10 text-center items-center p-2 bg-white')  # 초기 배경색을 흰색으로 설정
+                    date = jp.Td(text=date_str, classes='w-10 h-10 text-center items-center p-2 bg-white' + self.font.Body1_Regular)  # 초기 배경색을 흰색으로 설정
                     date.parent_row = row
                     date.on('click', self.append_date)
                     row.add(date)
             tbody.add(row)
 
         table.add(thead, tbody)
-        div_calendar.add(div_text, table, clicked_date)
+
+        # 이전 달과 다음 달로 이동하는 화살표
+        left_arrow = jp.Div(text='<', classes='cursor-pointer inline-block mr-2' + self.font.Heading1_Bold)
+        right_arrow = jp.Div(text='>', classes='cursor-pointer inline-block ml-2 text-xl')
+        left_arrow.on('click', self.prev_month)
+        right_arrow.on('click', self.next_month)
+
+        # 달력과 화살표를 div_calendar에 추가
+        div_calendar.add(jp.Div(classes='flex items-center justify-between', children=[left_arrow, div_text, right_arrow]))
+        div_calendar.add(table)
+        div_calendar.add(clicked_date)
         div.add(div_calendar)
-        wp.add(div)
+        wp.add(self.div)
+        
+    def update_calendar(self):
+        if self.div:
+            # div가 이미 존재하면, 기존 내용을 업데이트
+            self.div.delete_components()  # div 내의 모든 컴포넌트 삭제
+            
+            # 새로운 달력 내용으로 div 업데이트
+            div_calendar = jp.Div(classes='bg-white p-4 shadow-lg rounded-lg', style='width: 320px;')
+            div_text = jp.Div(text=f'{self.select_year}년 {self.select_month}월', classes='text-center text-xl font-bold mb-4')
+            clicked_date = jp.Div(text='', classes='text-lg font-semibold text-blue-500')
+            table = jp.Table(classes='table-fixed border-collapse border border-gray-300')
+            thead = jp.Thead()
+            tbody = jp.Tbody()
+
+            # 헤더 행 생성
+            header_row = jp.Tr()
+            for day in calendar.weekheader(2).split():
+                header_row.add(jp.Th(text=day, classes='p-2 border border-gray-300'))
+            thead.add(header_row)
+            
+            # 달력 데이터 생성
+            cal = self._get_calendar(self.select_year, self.select_month)
+            for week in cal:
+                row = jp.Tr()
+                for day in week:
+                    if day == '0':
+                        row.add(jp.Td(text='', classes='p-2'))
+                    else:
+                        date_str = str(day)[6:]
+                        date = jp.Td(text=date_str, classes='w-10 h-10 text-center items-center p-2 bg-white')
+                        date.parent_row = row
+                        date.on('click', self.append_date)
+                        row.add(date)
+                tbody.add(row)
+
+            table.add(thead, tbody)
+
+            # 이전 및 다음 달로 이동하는 화살표 추가
+            left_arrow = jp.Div(text='<', classes='cursor-pointer inline-block mr-2 text-xl')
+            right_arrow = jp.Div(text='>', classes='cursor-pointer inline-block ml-2 text-xl')
+            left_arrow.on('click', self.prev_month)
+            right_arrow.on('click', self.next_month)
+            
+            div_calendar.add(jp.Div(classes='flex items-center justify-between', children=[left_arrow, div_text, right_arrow]))
+
+            div_calendar.add(table)
+            div_calendar.add(clicked_date)
+            self.div.add(div_calendar)
+        else:
+            # div가 존재하지 않으면, 처음부터 달력을 생성
+            self.show_calendar(self.wp)
+
+            

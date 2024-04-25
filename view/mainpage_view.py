@@ -3,8 +3,6 @@ import justpy as jp
 from component.calendar import CalendarComponent
 
 
-
-
 def MainPageView():
     
     wp = jp.WebPage()

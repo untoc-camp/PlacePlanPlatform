@@ -1,0 +1,79 @@
+.heading1-bold {
+    font-size: 42px;
+    font-weight: bold;
+}
+
+.heading1-regular {
+    font-size: 42px;
+    font-weight: normal;
+}
+
+.heading2-bold {
+    font-size: 36px;
+    font-weight: bold;
+}
+
+.heading2-regular {
+    font-size: 36px;
+    font-weight: normal;
+}
+
+.heading3-bold {
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.heading3-regular {
+    font-size: 30px;
+    font-weight: normal;
+}
+
+.heading4-bold {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.heading4-regular {
+    font-size: 24px;
+    font-weight: normal;
+}
+
+.body1-bold {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.body1-regular {
+    font-size: 16px;
+    font-weight: normal;
+}
+
+.body2-bold {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.body2-regular {
+    font-size: 14px;
+    font-weight: normal;
+}
+
+.small1-bold {
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.small1-regular {
+    font-size: 12px;
+    font-weight: normal;
+}
+
+.small2 {
+    font-size: 8px;
+    font-weight: normal;
+}
+
+.small3 {
+    font-size: 6px;
+    font-weight: normal;
+}
