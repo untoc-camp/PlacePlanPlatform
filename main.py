@@ -8,4 +8,3 @@ from view.mainpage_view import MainPageView
 route()
 
 jp.justpy(MainPageView)
-
