@@ -109,13 +109,13 @@ class CalendarComponent:
             self.select_dates.remove(clicked_date)
             msg.target.classes = 'w-10 h-10 text-center items-center p-2 bg-white'
             msg.target.style = ""
-            print("msg에 대한 값입니다", msg.target.components)
+            # print("msg에 대한 값입니다", msg.target.components)
             
             msg.target.components = []
             
             if left_clicked_date in self.select_dates and right_clicked_date in self.select_dates and current_index > 0 and current_index < 6:
                 left_sibling = parent_row.components[current_index - 1]
-                print("left_sibiling 값", left_sibling)
+                # print("left_sibiling 값", left_sibling)
                 if left_sibling.style == self.left_cricle_style:
                     left_sibling.style = self.background_circle_style
                 else:
@@ -148,7 +148,7 @@ class CalendarComponent:
             
 
 
-        print(self.select_dates)
+        # print(self.select_dates)
 
     def prev_month(self, msg):
         self.select_month -= 1
@@ -203,8 +203,8 @@ class CalendarComponent:
         table.add(thead, tbody)
 
         # 이전 달과 다음 달로 이동하는 화살표
-        left_arrow = jp.Div(text='<', classes='cursor-pointer inline-block mr-2' + self.font.Heading1_Bold)
-        right_arrow = jp.Div(text='>', classes='cursor-pointer inline-block ml-2 text-xl')
+        left_arrow = jp.Div(text='<', classes='cursor-pointer inline-block' + self.font.Heading2_Bold)
+        right_arrow = jp.Div(text='>', classes='cursor-pointer inline-block' + self.font.Heading2_Bold)
         left_arrow.on('click', self.prev_month)
         right_arrow.on('click', self.next_month)
 
@@ -222,7 +222,7 @@ class CalendarComponent:
             
             # 새로운 달력 내용으로 div 업데이트
             div_calendar = jp.Div(classes='bg-white p-4 shadow-lg rounded-lg', style='width: 320px;')
-            div_text = jp.Div(text=f'{self.select_year}년 {self.select_month}월', classes='text-center text-xl font-bold mb-4')
+            div_text = jp.Div(text=f'{self.select_year}년 {self.select_month}월', classes = self.font.Heading4_Bold)
             clicked_date = jp.Div(text='', classes='text-lg font-semibold text-blue-500')
             table = jp.Table(classes='table-fixed border-collapse border border-gray-300')
             thead = jp.Thead()
@@ -243,7 +243,7 @@ class CalendarComponent:
                         row.add(jp.Td(text='', classes='p-2'))
                     else:
                         date_str = str(day)[6:]
-                        date = jp.Td(text=date_str, classes='w-10 h-10 text-center items-center p-2 bg-white')
+                        date = jp.Td(text=date_str, classes='w-10 h-10 text-center items-center p-2 bg-white' + self.font.Body1_Regular)
                         date.parent_row = row
                         date.on('click', self.append_date)
                         row.add(date)
@@ -252,8 +252,8 @@ class CalendarComponent:
             table.add(thead, tbody)
 
             # 이전 및 다음 달로 이동하는 화살표 추가
-            left_arrow = jp.Div(text='<', classes='cursor-pointer inline-block mr-2 text-xl')
-            right_arrow = jp.Div(text='>', classes='cursor-pointer inline-block ml-2 text-xl')
+            left_arrow = jp.Div(text='<', classes='cursor-pointer inline-block' + self.font.Heading2_Bold)
+            right_arrow = jp.Div(text='>', classes='cursor-pointer inline-block' + self.font.Heading2_Bold)
             left_arrow.on('click', self.prev_month)
             right_arrow.on('click', self.next_month)
             
