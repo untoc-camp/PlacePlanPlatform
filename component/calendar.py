@@ -11,7 +11,7 @@ class CalendarComponent:
         self.select_month = self.today.month
         self.select_year = self.today.year
         self.select_dates = []
-        self.calendar = self._get_calendar(self.today.year, self.today.month)
+        self.calendar = self._getCalendar(self.today.year, self.today.month)
         self.month_name = calendar.month_name[self.today.month]
         self.color = MainColors()
         self.font = Font()
@@ -24,7 +24,7 @@ class CalendarComponent:
         self.right_cricle_style = f'position: relative; background-color: {self.color.LightBlueColor}; width: 40px; height: 20px; border-top-right-radius: 20px; border-bottom-right-radius: 20px;'
         self.background_circle_style = f'position: relative; background-color: {self.color.LightBlueColor}; width: 40px; height: 40px; border-top-left-radius: 20px; border-bottom-left-radius: 20px; border-top-right-radius: 20px; border-bottom-right-radius: 20px;'
     
-    def _get_calendar(self, year, month):
+    def _getCalendar(self, year, month):
         calendar_list = []
         cal = calendar.monthcalendar(year, month)
         
@@ -39,7 +39,7 @@ class CalendarComponent:
         
         return calendar_list
     
-    def append_date(self, msg, *args, **kwargs):
+    def appendDate(self, msg, *args, **kwargs):
         clicked_date = str(self.select_year) + str(self.select_month).zfill(2) + msg.target.text
         
         parent_row = msg.target.parent_row  # 현재 클릭한 td의 부모 tr 요소
@@ -150,22 +150,22 @@ class CalendarComponent:
 
         # print(self.select_dates)
 
-    def prev_month(self, msg):
+    def prevMonth(self, msg):
         self.select_month -= 1
         if self.select_month == 0:
             self.select_month = 12
             self.select_year -= 1
-        self.update_calendar()  # 업데이트된 달력을 표시
+        self.updateCalendar()  # 업데이트된 달력을 표시
 
     # 다음 달로 이동하는 함수
-    def next_month(self, msg):
+    def nextMonth(self, msg):
         self.select_month += 1
         if self.select_month == 13:
             self.select_month = 1
             self.select_year += 1
-        self.update_calendar()  # 업데이트된 달력을 표시
+        self.updateCalendar()  # 업데이트된 달력을 표시
         
-    def show_calendar(self, wp):
+    def showCalendar(self, wp):
 
         self.wp = wp
         if self.div:
@@ -185,7 +185,7 @@ class CalendarComponent:
             header_row.add(jp.Th(text=day, classes='p-2 border border-gray-300'))
 
         thead.add(header_row)
-        cal = self._get_calendar(self.select_year, self.select_month)
+        cal = self._getCalendar(self.select_year, self.select_month)
 
         for week in cal:
             row = jp.Tr()
@@ -196,7 +196,7 @@ class CalendarComponent:
                     date_str = str(day)[6:]
                     date = jp.Td(text=date_str, classes='w-10 h-10 text-center items-center p-2 bg-white' + self.font.Body1_Regular)  # 초기 배경색을 흰색으로 설정
                     date.parent_row = row
-                    date.on('click', self.append_date)
+                    date.on('click', self.appendDate)
                     row.add(date)
             tbody.add(row)
 
@@ -205,8 +205,8 @@ class CalendarComponent:
         # 이전 달과 다음 달로 이동하는 화살표
         left_arrow = jp.Div(text='<', classes='cursor-pointer inline-block' + self.font.Heading2_Bold)
         right_arrow = jp.Div(text='>', classes='cursor-pointer inline-block' + self.font.Heading2_Bold)
-        left_arrow.on('click', self.prev_month)
-        right_arrow.on('click', self.next_month)
+        left_arrow.on('click', self.prevMonth)
+        right_arrow.on('click', self.nextMonth)
 
         # 달력과 화살표를 div_calendar에 추가
         div_calendar.add(jp.Div(classes='flex items-center justify-between', children=[left_arrow, div_text, right_arrow]))
@@ -215,7 +215,7 @@ class CalendarComponent:
         div.add(div_calendar)
         wp.add(self.div)
         
-    def update_calendar(self):
+    def updateCalendar(self):
         if self.div:
             # div가 이미 존재하면, 기존 내용을 업데이트
             self.div.delete_components()  # div 내의 모든 컴포넌트 삭제
@@ -235,7 +235,7 @@ class CalendarComponent:
             thead.add(header_row)
             
             # 달력 데이터 생성
-            cal = self._get_calendar(self.select_year, self.select_month)
+            cal = self._getCalendar(self.select_year, self.select_month)
             for week in cal:
                 row = jp.Tr()
                 for day in week:
@@ -245,7 +245,7 @@ class CalendarComponent:
                         date_str = str(day)[6:]
                         date = jp.Td(text=date_str, classes='w-10 h-10 text-center items-center p-2 bg-white' + self.font.Body1_Regular)
                         date.parent_row = row
-                        date.on('click', self.append_date)
+                        date.on('click', self.appendDate)
                         row.add(date)
                 tbody.add(row)
 
@@ -254,8 +254,8 @@ class CalendarComponent:
             # 이전 및 다음 달로 이동하는 화살표 추가
             left_arrow = jp.Div(text='<', classes='cursor-pointer inline-block' + self.font.Heading2_Bold)
             right_arrow = jp.Div(text='>', classes='cursor-pointer inline-block' + self.font.Heading2_Bold)
-            left_arrow.on('click', self.prev_month)
-            right_arrow.on('click', self.next_month)
+            left_arrow.on('click', self.prevMonth)
+            right_arrow.on('click', self.nextMonth)
             
             div_calendar.add(jp.Div(classes='flex items-center justify-between', children=[left_arrow, div_text, right_arrow]))
 
@@ -264,6 +264,6 @@ class CalendarComponent:
             self.div.add(div_calendar)
         else:
             # div가 존재하지 않으면, 처음부터 달력을 생성
-            self.show_calendar(self.wp)
+            self.showCalendar(self.wp)
 
             
