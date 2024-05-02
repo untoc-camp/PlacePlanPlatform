@@ -238,12 +238,29 @@ class CalendarComponent:
             cal = self._getCalendar(self.select_year, self.select_month)
             for week in cal:
                 row = jp.Tr()
-                for day in week:
+                for idx, day in enumerate(week):
                     if day == '0':
                         row.add(jp.Td(text='', classes='p-2'))
                     else:
                         date_str = str(day)[6:]
-                        date = jp.Td(text=date_str, classes='w-10 h-10 text-center items-center p-2 bg-white' + self.font.Body1_Regular)
+                        
+                        if day in self.select_dates:
+                            left_date = str(self.select_year) + str(self.select_month).zfill(2) + str(int(date_str) - 1)
+                            right_date = str(self.select_year) + str(self.select_month).zfill(2) + str(int(date_str) + 1)
+                            if left_date in self.select_dates and right_date in self.select_dates and idx > 0 and idx < 6:
+                                date = jp.Td(text=date_str, classes=self.default_class, style=self.rectangle_style)
+                            
+                            elif left_date in self.select_dates and idx > 0:
+                                date = jp.Td(text=date_str, classes=self.default_class, style=self.right_cricle_style)
+                                date.add(jp.Div(text=date_str, classes="absolute p-2 w-10 h-10 text-center items-center justify-center text-white", style=f'z-index: 2; background-color: {self.color.MainColor}; border-radius: 9999px; top: 50%; left: 50%; transform: translate(-50%, -50%);'))
+                            
+                            elif right_date in self.select_dates and idx < 6:
+                                date = jp.Td(text=date_str, classes=self.default_class, style=self.left_cricle_style)
+                                date.add(jp.Div(text=date_str, classes="absolute p-2 w-10 h-10 text-center items-center justify-center text-white", style=f'z-index: 2; background-color: {self.color.MainColor}; border-radius: 9999px; top: 50%; left: 50%; transform: translate(-50%, -50%);'))
+                            else:
+                                date = jp.Td(text=date_str, classes=self.default_class, style=self.background_circle_style)
+                        else:
+                            date = jp.Td(text=date_str, classes='w-10 h-10 text-center items-center p-2 bg-white' + self.font.Body1_Regular)
                         date.parent_row = row
                         date.on('click', self.appendDate)
                         row.add(date)
