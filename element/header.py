@@ -32,7 +32,7 @@ class Header:
         login_a.add(bottom_blue_retengle if self.route[:7] == "/signin" else bottom_white_retengle)
 
         signup_a = jp.A(text= "회원 가입", classes = self.font.Heading4_Bold + " mr-4 mt-4", href = "/signup", style = f'color: {self.color.TextColor}')
-        signup_a.add(bottom_blue_retengle if self.route[:6] == "/signup" else bottom_white_retengle)
+        signup_a.add(bottom_blue_retengle if self.route[:7] == "/signup" else bottom_white_retengle)
         
         header_right.add(login_a, signup_a)
 
