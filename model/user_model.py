@@ -20,3 +20,4 @@ class UserModel:
 def setUserModel(json):
     global user
     user =UserModel(json)
+

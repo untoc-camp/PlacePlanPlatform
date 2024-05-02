@@ -2,8 +2,8 @@ import justpy as jp
 import datetime
 import calendar
 
-from component.color import MainColors
-from component.font import Font
+from element.color import MainColors
+from element.font import Font
 
 class CalendarComponent:
     def __init__(self):
