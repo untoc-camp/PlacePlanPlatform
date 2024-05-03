@@ -21,8 +21,8 @@ class Header:
         main_page_a = jp.A(text="메인 화면", classes=self.font.Heading4_Bold + " ml-8 mt-4", href = "/", style = f'color: {self.color.TextColor}')
         main_page_a.add(bottom_blue_retengle if self.route == "/" else bottom_white_retengle)
 
-        introduce_div = jp.A(text="PPP 소개", classes=self.font.Heading4_Bold + " ml-8 mt-4", href = "/introduce", style = f'color: {self.color.TextColor}')
-        introduce_div.add(bottom_blue_retengle if self.route == "/introduce" else bottom_white_retengle)
+        introduce_div = jp.A(text="시간 약속", classes=self.font.Heading4_Bold + " ml-8 mt-4", href = "/signin", style = f'color: {self.color.TextColor}')
+        introduce_div.add(bottom_blue_retengle if self.route == "/timepromise" else bottom_white_retengle)
 
 
         header_left.add(main_logo_img, main_page_a, introduce_div)
