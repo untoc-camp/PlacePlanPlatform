@@ -16,8 +16,16 @@ class UserModel:
         self.user_id = ""
         self.user_name = ""
         self.user_password = ""
-
+user = None
 def setUserModel(json):
     global user
     user =UserModel(json)
 
+def getUserModel():
+    if user is None:
+        return None
+    return user
+
+def deleteUserModel():
+    user.deleteUser()
+    user = None
