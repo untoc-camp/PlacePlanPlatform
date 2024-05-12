@@ -12,5 +12,4 @@ def setup():
     jp.SetRoute("/")  # 홈 페이지 정의    
     jp.justpy(MainPageView)
     
-jp.justpy(setup)    
-
+jp.justpy(setup)
