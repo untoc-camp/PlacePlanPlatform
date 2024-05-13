@@ -3,15 +3,14 @@ import justpy as jp
 def TimePromiseMainView():
     wp = jp.WebPage()
     wp.add(jp.P(text='시간약속페이지', classes='text-5xl m-2'))
+    AppointmentApp().add_appointment_page(wp=wp)
     return wp
 
 class AppointmentApp:
     def __init__(self):
         self.appointments = []  # 약속 목록 저장 리스트
 
-    def add_appointment_page(self):
-        wp = jp.WebPage()
-
+    def add_appointment_page(self, wp):
         # 약속 추가 버튼
         add_button = jp.Button(text='약속 만들기', classes='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded m-2', a=wp)
         

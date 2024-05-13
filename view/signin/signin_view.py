@@ -7,7 +7,7 @@ def SignInView():
     header = Header("/signin")
     header.show_header(wp)
 
-    jp.P(text='로그인 페이지', classes='text-5xl m-2', a=wp)
+
     
     # 로그인 양식
     login_form = jp.Div(classes="flex flex-col items-center justify-center")
@@ -39,4 +39,3 @@ def SignInView():
 
     return wp
 
-jp.justpy(SignInView)

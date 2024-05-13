@@ -2,6 +2,7 @@ import justpy as jp
 from element.header import Header
 from element.color import MainColors
 from element.font import Font
+from statics.button_theme import large_pill_button_classes, pill_button_classes, pill_button_style
 
 
 def MainPageView():
@@ -71,8 +72,5 @@ def MainPageView():
         
     ])
     wp.add(usage_div)
-
+    
     return wp
-
-# Run the app
-jp.justpy(MainPageView)
