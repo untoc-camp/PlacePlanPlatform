@@ -2,7 +2,7 @@ import justpy as jp
 
 from element.header import Header
 
-def SignupView():
+def SignUpView():
     wp = jp.WebPage()
     header = Header("/signup")
     header.show_header(wp)
