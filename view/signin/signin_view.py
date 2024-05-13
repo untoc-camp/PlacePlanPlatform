@@ -32,7 +32,7 @@ def SignInView():
     # 회원가입 링크
     signup_text = jp.P(a=login_form)
     signup_text.text = "계정이 없으신가요? "
-    signup_text.add(jp.A(text="회원가입 하기", href="/signup", classes="hover:underline"))
+    signup_text.add(jp.A(text="회원가입", href="/signup", style="color: blue",classes="hover:underline"))
 
 
     wp.add(login_form)
