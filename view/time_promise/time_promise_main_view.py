@@ -4,3 +4,37 @@ def TimePromiseMainView():
     wp = jp.WebPage()
     wp.add(jp.P(text='시간약속페이지', classes='text-5xl m-2'))
     return wp
+
+class AppointmentApp:
+    def __init__(self):
+        self.appointments = []  # 약속 목록 저장 리스트
+
+    def add_appointment_page(self):
+        wp = jp.WebPage()
+
+        # 약속 추가 버튼
+        add_button = jp.Button(text='약속 만들기', classes='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded m-2', a=wp)
+        
+        # 약속 목록을 담을 그리드
+        self.grid = jp.Div(classes="grid grid-cols-3 gap-4 m-4", a=wp)
+
+        # 버튼 클릭하면 약속 추가
+        add_button.on('click', self.add_new_appointment)
+
+        return wp
+
+    def add_new_appointment(self, msg):
+        # 약속 담길 div 생성
+        appointment_div = jp.Div(classes="border-2 border-gray-400 p-2 rounded")
+        appointment_div.style = "margin: 50px;"
+        self.appointments.append(appointment_div)  # 약속 목록에 추가
+
+        # 약속 정보 추가
+        jp.P(text='약속 명', classes='text-lg', a=appointment_div)   # 추후에 변수 연결 예정 ------------------------- 
+        jp.Div(text='날짜: #날짜', classes='flex items-center', a=appointment_div)
+        jp.Div(text='참여 인원: #n명', classes='flex items-center', a=appointment_div)
+        jp.Div(text='위치: #위치명', classes='flex items-center', a=appointment_div)
+        jp.Div(text='공유하기', classes='flex items-center justify-end', a=appointment_div)
+
+        # 그리드에 약속 div 추가
+        appointment_div.add_to(self.grid)
