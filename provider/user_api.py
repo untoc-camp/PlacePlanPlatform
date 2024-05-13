@@ -1,5 +1,5 @@
 import justpy as jp
-from static.api import api
+from statics.api import api
 import requests, json
 
 async def Login(UserModel): 
