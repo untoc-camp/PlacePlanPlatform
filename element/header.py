@@ -54,7 +54,7 @@ class Header:
 
         
         main_logo_a = jp.A(href = "/", style = f'color: {self.color.TextColor}')
-        main_logo_img = jp.Img(src='/static/statics/header_logo.png', classes = "ml-4", style='height: 50px; width: auto;')
+        main_logo_img = jp.Img(src='/static/statics/header_logo.svg', classes = "ml-4", style='height: 50px; width: auto;')
         main_logo_a.add(main_logo_img)
         
         main_page_a = jp.A(text="시간 약속", classes=self.font.Heading4_Bold + " ml-8 mt-4", href = "/timepromise", style = f'color: {self.color.TextColor}')
