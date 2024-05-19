@@ -15,7 +15,7 @@ def MainPageView():
     font = Font()
 
     # Introduction Section
-    intro_div = jp.Div(style=f'background-image: url(/static/statics/img/introduce.png); height: 190vh; background-size: cover; display: flex; flex-direction: column; justify-content: center; align-items: center; line-height: 3;', classes=f'{font.Heading4_Regular}; text-center',children=[
+    intro_div = jp.Div(style=f'background-image: url(/static/statics/img/introduce.png); height: auto; max-width: 100%; background-size: cover; display: flex; flex-direction: column; justify-content: center; align-items: center; line-height: 3;', classes=f'{font.Heading4_Regular}; text-center',children=[
         jp.P(text='　', classes='my-5', style='line-height: 0'),
         jp.P(text='일정 관리 플랫폼', style=f'color: {main_colors.MainColor};', classes=f'{font.Heading2_Bold};'),
         jp.P(text='　', classes='my-2', style='line-height: 0'),
