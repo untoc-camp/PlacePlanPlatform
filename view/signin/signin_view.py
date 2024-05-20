@@ -32,7 +32,7 @@ def SignInView():
     
     # Input 스타일 적용
     input_style = "border p-2 m-2 rounded-full w-full"
-    username_input = jp.Input(placeholder="Username", a=login_form, classes=input_style)
+    id_input = jp.Input(placeholder="Username", a=login_form, classes=input_style)
     password_input = jp.Input(placeholder="Password", type="password", a=login_form, classes=input_style)
     
     dialog = jp.Div(classes="fixed inset-0 bg-gray-800 bg-opacity-50 items-center justify-center hidden", a=wp)
