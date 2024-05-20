@@ -28,11 +28,10 @@ def SignInView():
     # 로그인 양식을 담을 div
     login_form = jp.Div(classes="flex flex-col items-center justify-center bg-white p-8 w-96", a=main_div)
     login_text = jp.Div(text="Login", classes="text-5xl text-blue-500 font-semibold mb-4", a=login_form)
-    blank_text = jp.Div(text="      ", classes="text-5xl")
     
     # Input 스타일 적용
     input_style = "border p-2 m-2 rounded-full w-full"
-    username_input = jp.Input(placeholder="Username", a=login_form, classes=input_style)
+    id_input = jp.Input(placeholder="UntocPPP@pusan.ac.kr", a=login_form, classes=input_style)
     password_input = jp.Input(placeholder="Password", type="password", a=login_form, classes=input_style)
     
     dialog = jp.Div(classes="fixed inset-0 bg-gray-800 bg-opacity-50 items-center justify-center hidden", a=wp)
