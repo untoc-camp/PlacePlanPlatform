@@ -41,16 +41,11 @@ def SignInView():
     find_password = jp.P(a=login_form, classes="w-full text-right")  # 부모 요소 설정
     find_password.add(jp.A(text="비밀번호 찾기", href="/signin/findPassword", classes="hover:underline text-xs pr-2"))
 
-
     # Button 스타일 적용
     button_style = "border p-2 m-2 rounded-full bg-blue-500 text-white w-full"
     login_button = jp.Button(text="로그인", a=login_form, classes=button_style)
     login_button.on('click', show_popup)  # Call show_popup function when button is clicked
     login_button.dialog = dialog
-
-     # 비밀번호 찾기 링크
-    find_password_link = jp.A(text="비밀번호 찾기", href="/signin/findpassword", a=login_form, classes="text-xs hover:underline")
-    find_password_link.style = "margin-top: 2px; margin-right: 10px;"  # 간격 설정
 
     # 팝업 내부 내용
     popup_content = jp.Div(classes="bg-white p-4 rounded-lg text-center", a=dialog)
