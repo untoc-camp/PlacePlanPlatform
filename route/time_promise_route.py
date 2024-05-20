@@ -6,6 +6,6 @@ from view.time_promise.time_promise_make_view import TimePromiseMakeView
 
 def TimePromiseRoute():
     jp.Route('/timepromise', TimePromiseMainView)
-    jp.Route('/timepromise/{time_promise_id}', TimePromiseDetailView)
     jp.Route('/timepromise/make', TimePromiseMakeView)
+    jp.Route('/timepromise/{time_promise_id}', TimePromiseDetailView)
     
