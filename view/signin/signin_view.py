@@ -27,7 +27,8 @@ def SignInView():
 
     # 로그인 양식을 담을 div
     login_form = jp.Div(classes="flex flex-col items-center justify-center bg-white p-8 w-96", a=main_div)
-    login_text = jp.Div(text="Login", classes="text-2xl text-blue-500", a=login_form)
+    login_text = jp.Div(text="Login", classes="text-5xl text-blue-500 font-semibold mb-4", a=login_form)
+    blank_text = jp.Div(text="      ", classes="text-5xl")
     
     # Input 스타일 적용
     input_style = "border p-2 m-2 rounded-full w-full"
