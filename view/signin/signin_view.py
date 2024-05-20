@@ -48,6 +48,10 @@ def SignInView():
     login_button.on('click', show_popup)  # Call show_popup function when button is clicked
     login_button.dialog = dialog
 
+     # 비밀번호 찾기 링크
+    find_password_link = jp.A(text="비밀번호 찾기", href="/signin/findpassword", a=login_form, classes="text-xs hover:underline")
+    find_password_link.style = "margin-top: 2px; margin-right: 10px;"  # 간격 설정
+
     # 팝업 내부 내용
     popup_content = jp.Div(classes="bg-white p-4 rounded-lg text-center", a=dialog)
     jp.P(text='아이디 또는 비밀번호가 일치하지 않습니다.', classes='my-5', a=popup_content)
