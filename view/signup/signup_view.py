@@ -21,13 +21,12 @@ def SignUpView():
     wp = jp.WebPage()
     header = Header("/signup")
     header.show_header(wp)
-    wp.add(jp.P(text='회원가입 페이지', classes='text-5xl m-2'))
     
     # 회원가입 양식
     # 전체 화면을 중앙 정렬하기 위한 div
     main_div = jp.Div(classes="flex items-center justify-center min-h-screen", a=wp)
 
-    # 로그인 양식을 담을 div
+    # 회원가입 양식을 담을 div
     signup_form = jp.Div(classes="flex flex-col items-center justify-center bg-white p-8 w-96", a=main_div)
     signup_text = jp.Div(text="Sign Up", classes="text-5xl text-blue-500 font-semibold mb-4", a=signup_form)
     
