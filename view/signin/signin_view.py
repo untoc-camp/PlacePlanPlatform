@@ -61,5 +61,3 @@ def SignInView():
     signup_text.add(jp.A(text="회원가입", href="/signup", style="color: blue", classes="underline"))
 
     return wp
-
-jp.justpy(SignInView)
