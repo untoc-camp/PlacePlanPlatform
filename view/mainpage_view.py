@@ -15,7 +15,7 @@ def MainPageView():
     font = Font()
 
     # Introduction Section
-    intro_div = jp.Div(style=f'background-image: url(/static/statics/img/introduce.png); height: 190vh; background-size: cover; display: flex; flex-direction: column; justify-content: center; align-items: center; line-height: 3;', classes=f'{font.Heading4_Regular}; text-center',children=[
+    intro_div = jp.Div(style=f'background-image: url(/static/statics/img/introduce.svg); height: auto; max-width: 100%; background-size: cover; display: flex; flex-direction: column; justify-content: center; align-items: center; line-height: 3;', classes=f'{font.Heading4_Regular}; text-center',children=[
         jp.P(text='　', classes='my-5', style='line-height: 0'),
         jp.P(text='일정 관리 플랫폼', style=f'color: {main_colors.MainColor};', classes=f'{font.Heading2_Bold};'),
         jp.P(text='　', classes='my-2', style='line-height: 0'),
@@ -44,7 +44,7 @@ def MainPageView():
         jp.P(text='약속을 편하게', style='line-height: 0.8; z-index: 2;', classes=f'{font.Heading3_Bold} text-right relative'),
         jp.P(text='잡아보세요', classes=f'{font.Heading3_Bold} text-right relative'),
         jp.Div(style='position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1;', children=[
-            jp.Img(src='/static/statics/img/feature.png', classes="mx-auto", style='height: auto; max-width: 100%;')
+            jp.Img(src='/static/statics/img/feature.svg', classes="mx-auto", style='height: auto; max-width: 100%;')
         ])
     ])
     
@@ -67,7 +67,7 @@ def MainPageView():
         jp.P(text='　', classes='my-10', style='line-height: 30'),
         jp.P(text='Copyright 2021. PPP & UntoC CI.All right reserved.', classes=f'{font.Body1_Regular}'),
         jp.Div(style='position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1;', children=[
-            jp.Img(src='/static/statics/img/usage.png', classes="mx-auto", style='height: auto; max-width: 100%;')
+            jp.Img(src='/static/statics/img/usage.svg', classes="mx-auto", style='height: auto; max-width: 100%;')
         ])
         
     ])
