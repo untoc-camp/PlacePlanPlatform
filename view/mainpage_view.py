@@ -2,7 +2,7 @@ import justpy as jp
 from element.header import Header
 from element.color import MainColors
 from element.font import Font
-#from PyKakao import Local
+from PyKakao import Local
 from statics.button_theme import large_pill_button_classes, pill_button_classes, pill_button_style
 
 def MainPageView():
