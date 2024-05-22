@@ -30,22 +30,26 @@ def TimePromiseDetailView():
     header = Header("/timepromise/{time_promise_id}")
     header.show_header(wp)
     
-    table = jp.Table(a=wp, classes="q-table")
+    table = jp.Table(a=wp, classes="q-table", style="margin-top: 200px; margin-left: 50px")
     thead = jp.Thead(a=table)
     tr = jp.Tr(a=thead)
     
     # 테이블 헤더 - 요일
-    jp.Th(a=tr, text="Time")
+    jp.Th(a=tr, text="    ")
     for day in selected_times.keys():
         jp.Th(a=tr, text=day)
     
-    # 테이블 본문 - 시간 슬록 및 색상
+     # 테이블 본문 - 시간 슬롯 및 색상
     tbody = jp.Tbody(a=table)
     for hour in range(9, 22):
         tr = jp.Tr(a=tbody)
-        jp.Td(a=tr, text=f"{hour:02d}:00")  # 시간 열
+        jp.Td(a=tr, text=f"{hour:02d}:00", style="border: none;")  # 시간 열
         for day in selected_times:
             time = f"{hour:02d}:00"
-            jp.Td(a=tr, style=f"background-color: {get_color(selected_times[day][time])}; color: white")
-            
+            border_style = "border: 1px solid black;" if hour > 9 else "border: none;"
+            jp.Td(a=tr, style=f"background-color: {get_color(selected_times[day][time])}; color: white; border: 1px solid black;")
+    
+    # 헤더의 테두리 설정 (1행 제외)
+    
     return wp
+
