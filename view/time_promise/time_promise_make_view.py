@@ -2,6 +2,7 @@ import justpy as jp
 from element.color import MainColors
 from element.font import Font
 from element.calendar import CalendarComponent
+from element.header import Header
 
 class AppointmentPage:
     def __init__(self):
@@ -9,23 +10,59 @@ class AppointmentPage:
         self.font = Font()
         self.calendar = CalendarComponent()
         self.custom_type_input = None  # 직접 작성 입력란을 저장할 변수
-        
+        self.appointment_type_select = None  # 약속 종류 선택란을 저장할 변수
+    
     def appointment_page(self):
         wp = jp.WebPage()
+        head = Header("/timepromise/make") 
+        head.show_header(wp)
+    
+        main_colors = MainColors()
+        font = Font()
+        
+        # 이벤트 이름 입력 필드
+        event_name_container = jp.Div(classes='flex justify-center mt-10')
+        event_name_input = jp.Input(placeholder='New Event Name', 
+                                    classes='block w-1/3 p-2 text-center border rounded', 
+                                    style='border-width: 2px; border-color: black;')
+        event_name_container.add(event_name_input)
         
         # 이전 페이지로 이동하는 화살표
-        back_arrow = jp.Div(text='<', classes='cursor-pointer absolute top-5 left-5 ' + self.font.Heading2_Bold)
+        back_arrow = jp.Div(text='<', classes='cursor-pointer absolute top-20 left-5 ' + self.font.Heading2_Bold)
         back_arrow.on('click', self.go_back)
         
         # 달력과 약속 정보를 담을 컨테이너
-        main_container = jp.Div(classes='flex justify-center mt-10')
-        
+        main_container = jp.Div(classes='flex justify-start mt-10', style='width: 80%; margin: 0 auto; margin-left: 100px;')
+
         # 달력을 담을 div
-        calendar_div = jp.Div(classes='w-2/5 h-96 bg-white-100 p-4 rounded-md mr-5')
+        # 달력을 담을 div (오른쪽으로 이동시키기 위해 margin-left 추가)
+        calendar_div = jp.Div(classes='w-2/5 h-96 bg-white-100 p-4 rounded-md', style='margin-right: 50px;')
+        title = jp.P(text='시간을 정해주세요', classes='text-xl font-bold mb-2 text-center')
+        description = jp.P(text='요일을 선택할 수 있습니다.', classes='text-gray-600 mb-2 text-center')
+        description2 = jp.P(text='특정 일을 선택할 수도 있습니다.', classes='text-gray-600 mb-4 text-center')
+
+        selection_dropdown = jp.Select(classes='block w-2/3 mx-auto mb-4', style='width: 200px;')
+        selection_dropdown.add(jp.Option(text='특정 일 선택', value='', classes='text-gray-500'))  # 선택 가능하도록 변경
+        selection_dropdown.add(jp.Option(text='요일 선택', value='weekday', selected=True))  # 선택 상태 해제
+        calendar_div.add(title, description, description2, selection_dropdown)
         self.calendar.showCalendar(calendar_div)
         
-        # 약속 정보를 넣을 div
-        appointment_info_div = jp.Div(classes='bg-white p-4 shadow-lg rounded-lg', style='width: 360px; height: 360px;')
+        # 약속 정보를 담을 컨테이너
+        right_container = jp.Div(classes='flex flex-col w-2/5 h-96 justify-between ml-5')
+
+        # 약속 멘트 정보를 담을 div
+        appointment_ment_div = jp.Div(classes='w-full bg-white-100 p-4 rounded-md mb-5')
+        title = jp.P(text='몇시에 만날래?', classes='text-xl font-bold mb-2 text-center')
+        description = jp.P(text='시작시간 및 끝나는 시간을 선택해 주세요.', classes='text-gray-600 mb-2 text-center')
+        description2 = jp.P(text='약속 장소를 선택해 주세요.', classes='text-gray-600 mb-4 text-center')
+
+        selection_dropdown = jp.Select(classes='block w-2/3 mx-auto mb-4', style='width: 200px;')
+        selection_dropdown.add(jp.Option(text='24시간을 기준으로 합니다.', value='', selected=True, classes='text-gray-500'))  # 선택한 상태로 설정
+        selection_dropdown.add(jp.Option(text='12시간을 기준으로 합니다.', value='weekday', classes='text-gray-500'))  # 선택 가능하도록 변경
+        appointment_ment_div.add(title, description, description2, selection_dropdown)
+
+        # 약속 정보를 담을 div
+        appointment_info_div = jp.Div(classes='w-full bg-white-100 p-4 rounded-md')
         
         # 시작 시간 선택
         start_time_container = jp.Div(classes='flex items-center mb-4')
@@ -64,7 +101,7 @@ class AppointmentPage:
         
         # 지역 선택
         appointment_info_div.add(jp.P(text='지역 선택:', classes='mt-4'))
-        self.appointment_place_select = jp.Select(classes='block w-full mt-2')
+        self.appointment_place_select = jp.Select(classes='block w-full mt-2 mb-4')
         self.appointment_place_select.add(jp.Option(text='장소 선택하세요', value='', disabled=True, selected=True, classes='text-gray-500'))
         self.appointment_place_select.add(jp.Option(text='부산대', value='부산대'))
         self.appointment_place_select.add(jp.Option(text='서면', value='서면'))
@@ -72,37 +109,45 @@ class AppointmentPage:
         self.appointment_place_select.add(jp.Option(text='남포', value='남포'))        
         self.appointment_place_select.add(jp.Option(text='직접 작성', value='직접 작성'))
         appointment_info_div.add(self.appointment_place_select)
+        
         # 약속 종류 선택
         appointment_info_div.add(jp.P(text='약속 종류:', classes='mt-4'))
-        self.appointment_type_select = jp.Select(classes='block w-full mt-2')
+        self.appointment_type_select = jp.Select(classes='block w-full mt-2 mb-4', change=self.show_custom_type_input)
         self.appointment_type_select.add(jp.Option(text='종류를 선택하세요', value='', disabled=True, selected=True, classes='text-gray-500'))
         self.appointment_type_select.add(jp.Option(text='미정', value='종류는 미정'))
         self.appointment_type_select.add(jp.Option(text='밥약속', value='밥약속'))
         self.appointment_type_select.add(jp.Option(text='술약속', value='술약속'))
         self.appointment_type_select.add(jp.Option(text='회의', value='회의'))
         self.appointment_type_select.add(jp.Option(text='직접 작성', value='직접 작성'))
-        self.appointment_type_select.on('change', self.show_custom_type_input)
         appointment_info_div.add(self.appointment_type_select)
         
         # 약속 추가 버튼
         appointment_info_div.add(jp.Button(text='약속 추가', classes='bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded mt-4'))
 
-        main_container.add(calendar_div, appointment_info_div)
-        wp.add(back_arrow, main_container)
+        # right_container에 약속 멘트 div와 약속 정보 div 추가
+        right_container.add(appointment_ment_div, appointment_info_div)
+        
+        main_container.add(calendar_div, right_container)
+        wp.add(event_name_container, back_arrow, main_container)
         return wp
+    
     
     # 약속 종류 선택 시 직접 작성 입력란을 보여줌
     def show_custom_type_input(self, msg):
         if msg.value == '직접 작성':
+            # 기존 Select 요소를 숨기고 Input 필드를 추가
+            self.appointment_type_select.set_class('hidden')
             self.custom_type_input = jp.Input(type='text', classes='block w-full mt-2', placeholder='약속 종류를 입력하세요')
-            self.appointment_type_select.after(self.custom_type_input)
+            msg.target.parent.add(self.custom_type_input)
         else:
+            # Select 요소를 다시 보여주고 Input 필드를 제거
             if self.custom_type_input:
                 self.custom_type_input.delete()
+                self.appointment_type_select.set_class('block')
 
-    # 뒤로가기
+    # 이전 페이지로 돌아가는 함수
     def go_back(self, msg):
-        msg.page.redirect('/timepromise')
+        jp.redirect('/timepromise')
 
 
 def TimePromiseMakeView():
