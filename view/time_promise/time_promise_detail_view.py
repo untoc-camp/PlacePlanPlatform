@@ -11,7 +11,7 @@ selected_times = {
 for day in selected_times:
     for hour in range(18, 20):  # 18시부터 20시까지
         time = f"{hour:02d}:00"
-        selected_times[day][time] = 2
+        selected_times[day][time] = 1
 
 # 색상 설정 함수
 def get_color(count):
