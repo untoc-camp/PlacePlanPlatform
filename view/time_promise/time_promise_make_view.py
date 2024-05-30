@@ -29,14 +29,12 @@ class AppointmentPage:
         
         # 이전 페이지로 이동하는 화살표
         back_arrow = jp.Div(text='<', classes='cursor-pointer absolute top-20 left-5 ' + self.font.Heading2_Bold)
-        back_arrow.on('click', self.go_back)
         
         # 달력과 약속 정보를 담을 컨테이너
-        main_container = jp.Div(classes='flex justify-start mt-10', style='width: 80%; margin: 0 auto; margin-left: 100px;')
+        main_container = jp.Div(classes='flex justify-between mt-10', style='width: 80%; margin: 0 auto;')
 
         # 달력을 담을 div
-        # 달력을 담을 div (오른쪽으로 이동시키기 위해 margin-left 추가)
-        calendar_div = jp.Div(classes='w-2/5 h-96 bg-white-100 p-4 rounded-md', style='margin-right: 50px;')
+        calendar_div = jp.Div(classes='w-1/3 bg-white-100 p-4 rounded-md')
         title = jp.P(text='시간을 정해주세요', classes='text-xl font-bold mb-2 text-center')
         description = jp.P(text='요일을 선택할 수 있습니다.', classes='text-gray-600 mb-2 text-center')
         description2 = jp.P(text='특정 일을 선택할 수도 있습니다.', classes='text-gray-600 mb-4 text-center')
@@ -48,22 +46,24 @@ class AppointmentPage:
         self.calendar.showCalendar(calendar_div)
         
         # 약속 정보를 담을 컨테이너
-        right_container = jp.Div(classes='flex flex-col w-2/5 h-96 justify-between ml-5')
-
+        right_container = jp.Div(classes='flex flex-col w-1/3 h-96 justify-between')
         # 약속 멘트 정보를 담을 div
-        appointment_ment_div = jp.Div(classes='w-full bg-white-100 p-4 rounded-md mb-5')
+        appointment_ment_div = jp.Div(classes='w-full bg-white-100 p-4 rounded-md', style='margin-bottom: 0;')  
+
+
         title = jp.P(text='몇시에 만날래?', classes='text-xl font-bold mb-2 text-center')
         description = jp.P(text='시작시간 및 끝나는 시간을 선택해 주세요.', classes='text-gray-600 mb-2 text-center')
         description2 = jp.P(text='약속 장소를 선택해 주세요.', classes='text-gray-600 mb-4 text-center')
 
         selection_dropdown = jp.Select(classes='block w-2/3 mx-auto mb-4', style='width: 200px;')
-        selection_dropdown.add(jp.Option(text='24시간을 기준으로 합니다.', value='', selected=True, classes='text-gray-500'))  # 선택한 상태로 설정
-        selection_dropdown.add(jp.Option(text='12시간을 기준으로 합니다.', value='weekday', classes='text-gray-500'))  # 선택 가능하도록 변경
+        selection_dropdown.add(jp.Option(text='24시간 기준', value='', selected=True, classes='text-gray-500'))  # 선택한 상태로 설정
+        selection_dropdown.add(jp.Option(text='12시간 기준', value='weekday', classes='text-gray-500'))  # 선택 가능하도록 변경
         appointment_ment_div.add(title, description, description2, selection_dropdown)
 
+
         # 약속 정보를 담을 div
-        appointment_info_div = jp.Div(classes='w-full bg-white-100 p-4 rounded-md')
-        
+        appointment_info_div = jp.Div(classes='bg-white p-4 shadow-lg rounded-lg mt-1', style='width: 400px; height: 320px;')
+
         # 시작 시간 선택
         start_time_container = jp.Div(classes='flex items-center mb-4')
         start_time_container.add(jp.P(text='시작 시간:', classes='mr-2'))
@@ -138,15 +138,12 @@ class AppointmentPage:
             # 기존 Select 요소를 숨기고 Input 필드를 추가
             self.appointment_type_select.set_class('hidden')
             self.custom_type_input = jp.Input(type='text', classes='block w-full mt-2', placeholder='약속 종류를 입력하세요')
-            msg.target.parent.add(self.custom_type_input)
+            msg.target.parent.add(self.custom_type_input) # 선택한 요소의 부모 요소에 추가
         else:
-            # Select 요소를 다시 보여주고 Input 필드를 제거
-            if self.custom_type_input:
-                self.custom_type_input.delete()
-                self.appointment_type_select.set_class('block')
+            pass
 
     # 이전 페이지로 돌아가는 함수
-    def go_back(self, msg):
+    def go_back(self, msg):     ###### 잘 실행되지 않아 수정필요
         jp.redirect('/timepromise')
 
 
