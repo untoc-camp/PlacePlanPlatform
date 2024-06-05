@@ -11,14 +11,70 @@ class AppointmentPage:
         self.calendar = CalendarComponent()
         self.custom_type_input = None  # 직접 작성 입력란을 저장할 변수
         self.appointment_type_select = None  # 약속 종류 선택란을 저장할 변수
+        self.calendar_div = jp.Div(classes='w-1/3 bg-white-100 p-4 rounded-md')
+
+        
     
+    def toggle_color(self, msg):
+
+        if 'bg-blue-500' in msg.target.classes:
+            msg.target.classes= 'w-8 h-48 border-2 border-gray-400 bg-white rounded'
+        else:
+
+            msg.target.classes = 'w-8 h-48 border-2 border-gray-400 bg-blue-500 rounded'
+
+
+    
+    def time_dropdown_select(self, msg):
+        if msg.target.value == 'weekday':
+            self.calendar_div.delete_components()
+
+            title = jp.P(text='시간을 정해주세요', classes='text-xl font-bold mb-2 text-center')
+            description = jp.P(text='요일을 선택할 수 있습니다.', classes='text-gray-600 mb-2 text-center')
+            description2 = jp.P(text='특정 일을 선택할 수도 있습니다.', classes='text-gray-600 mb-4 text-center')
+
+            selection_dropdown = jp.Select(classes='block w-2/3 mx-auto mb-4', style='width: 200px;')
+            selection_dropdown.add(jp.Option(text='특정 일 선택', value=''))  # 특정 일 선택 옵션 선택 상태 해제
+            selection_dropdown.add(jp.Option(text='요일 선택', value='weekday'))  # 요일 선택 옵션 선택 상태 설정
+            selection_dropdown.on('change', self.time_dropdown_select)
+            self.calendar_div.add(title, description, description2, selection_dropdown)
+            days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+
+            # 전체 컨테이너 설정
+            container = jp.Div(classes='bg-white p-4 shadow-lg rounded-lg', style='width: 320px;', a=self.calendar_div)
+
+            # 막대들을 담을 내부 컨테이너
+            inner_container = jp.Div(classes='flex flex-col items-center', a=container)
+
+            # 요일별 막대 컨테이너
+            bars_container = jp.Div(classes='flex', a=inner_container)
+
+            # 각 요일 막대 추가
+            for day in days:
+                day_container = jp.Div(classes='flex flex-col items-center mx-1', a=bars_container)
+                jp.Div(text=day, classes='mb-2', a=day_container)
+                bar = jp.Div(classes='w-8 h-48 border-2 border-gray-400 bg-white rounded', a=day_container)
+                bar.on('click', self.toggle_color) # 막대를 클릭하면 색상 바뀜
+
+        else:
+            self.calendar_div.delete_components()
+
+            title = jp.P(text='시간을 정해주세요', classes='text-xl font-bold mb-2 text-center')
+            description = jp.P(text='요일을 선택할 수 있습니다.', classes='text-gray-600 mb-2 text-center')
+            description2 = jp.P(text='특정 일을 선택할 수도 있습니다.', classes='text-gray-600 mb-4 text-center')
+
+            selection_dropdown = jp.Select(classes='block w-2/3 mx-auto mb-4', style='width: 200px;')
+            selection_dropdown.add(jp.Option(text='특정 일 선택', value=''))  # 특정 일 선택 옵션 선택 상태 설정
+            selection_dropdown.add(jp.Option(text='요일 선택', value='weekday'))  # 요일 선택 옵션 선택 상태 해제
+            selection_dropdown.on('change', self.time_dropdown_select)
+            self.calendar_div.add(title, description, description2, selection_dropdown)
+            self.calendar.showCalendar(self.calendar_div)
+
     def appointment_page(self):
         wp = jp.WebPage()
         head = Header("/timepromise/make") 
         head.show_header(wp)
     
-        main_colors = MainColors()
-        font = Font()
         
         # 이벤트 이름 입력 필드
         event_name_container = jp.Div(classes='flex justify-center mt-10')
@@ -34,16 +90,17 @@ class AppointmentPage:
         main_container = jp.Div(classes='flex justify-between mt-10', style='width: 80%; margin: 0 auto;')
 
         # 달력을 담을 div
-        calendar_div = jp.Div(classes='w-1/3 bg-white-100 p-4 rounded-md')
+        
         title = jp.P(text='시간을 정해주세요', classes='text-xl font-bold mb-2 text-center')
         description = jp.P(text='요일을 선택할 수 있습니다.', classes='text-gray-600 mb-2 text-center')
         description2 = jp.P(text='특정 일을 선택할 수도 있습니다.', classes='text-gray-600 mb-4 text-center')
 
         selection_dropdown = jp.Select(classes='block w-2/3 mx-auto mb-4', style='width: 200px;')
         selection_dropdown.add(jp.Option(text='특정 일 선택', value='', classes='text-gray-500'))  # 선택 가능하도록 변경
-        selection_dropdown.add(jp.Option(text='요일 선택', value='weekday', selected=True))  # 선택 상태 해제
-        calendar_div.add(title, description, description2, selection_dropdown)
-        self.calendar.showCalendar(calendar_div)
+        selection_dropdown.add(jp.Option(text='요일 선택', value='weekday'))  # 선택 상태 해제
+        selection_dropdown.on('change', self.time_dropdown_select)
+        self.calendar_div.add(title, description, description2, selection_dropdown)
+        self.calendar.showCalendar(self.calendar_div)
         
         # 약속 정보를 담을 컨테이너
         right_container = jp.Div(classes='flex flex-col w-1/3 h-96 justify-between')
@@ -127,7 +184,7 @@ class AppointmentPage:
         # right_container에 약속 멘트 div와 약속 정보 div 추가
         right_container.add(appointment_ment_div, appointment_info_div)
         
-        main_container.add(calendar_div, right_container)
+        main_container.add(self.calendar_div, right_container)
         wp.add(event_name_container, back_arrow, main_container)
         return wp
     
