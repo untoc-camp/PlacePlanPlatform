@@ -283,4 +283,6 @@ class CalendarComponent:
             # div가 존재하지 않으면, 처음부터 달력을 생성
             self.showCalendar(self.wp)
 
-            
+    def resetCalendar(self):
+        self.select_dates = []
+        self.updateCalendar()

@@ -13,8 +13,6 @@ class AppointmentPage:
         self.appointment_type_select = None  # 약속 종류 선택란을 저장할 변수
         self.calendar_div = jp.Div(classes='w-1/3 bg-white-100 p-4 rounded-md')
 
-        
-    
     def toggle_color(self, msg):
 
         if 'bg-blue-500' in msg.target.classes:
@@ -23,10 +21,10 @@ class AppointmentPage:
 
             msg.target.classes = 'w-8 h-48 border-2 border-gray-400 bg-blue-500 rounded'
 
-
     
     def time_dropdown_select(self, msg):
         if msg.target.value == 'weekday':
+            self.calendar.resetCalendar()
             self.calendar_div.delete_components()
 
             title = jp.P(text='시간을 정해주세요', classes='text-xl font-bold mb-2 text-center')
@@ -34,8 +32,8 @@ class AppointmentPage:
             description2 = jp.P(text='특정 일을 선택할 수도 있습니다.', classes='text-gray-600 mb-4 text-center')
 
             selection_dropdown = jp.Select(classes='block w-2/3 mx-auto mb-4', style='width: 200px;')
-            selection_dropdown.add(jp.Option(text='특정 일 선택', value=''))  # 특정 일 선택 옵션 선택 상태 해제
-            selection_dropdown.add(jp.Option(text='요일 선택', value='weekday'))  # 요일 선택 옵션 선택 상태 설정
+            selection_dropdown.add(jp.Option(text='특정 일 선택', value='day'))  # 특정 일 선택 옵션 선택 상태 해제
+            selection_dropdown.add(jp.Option(text='요일 선택', value=''))  # 요일 선택 옵션 선택 상태 설정
             selection_dropdown.on('change', self.time_dropdown_select)
             self.calendar_div.add(title, description, description2, selection_dropdown)
             days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
@@ -57,6 +55,7 @@ class AppointmentPage:
                 bar.on('click', self.toggle_color) # 막대를 클릭하면 색상 바뀜
 
         else:
+            self.calendar.resetCalendar()
             self.calendar_div.delete_components()
 
             title = jp.P(text='시간을 정해주세요', classes='text-xl font-bold mb-2 text-center')
