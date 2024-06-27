@@ -1,7 +1,7 @@
 import justpy as jp
 
 from element.header import Header
-from element.popup import Popup1
+from element.popup import PopupText
 
 def SignInView():
     wp = jp.WebPage()
@@ -30,7 +30,7 @@ def SignInView():
     button_style = "border p-2 m-2 rounded-full bg-blue-500 text-white w-full"
     login_button = jp.Button(text="로그인", a=login_form, classes=button_style)
 
-    error = Popup1(wp,'알림','아이디 또는 비밀번호가 일치하지 않습니다.')
+    error = PopupText(wp,'알림','아이디 또는 비밀번호가 일치하지 않습니다.')
     login_button.on('click', error.show_popup)
     
     jp.Br(a=login_form)
