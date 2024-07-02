@@ -2,8 +2,18 @@ import justpy as jp
 from element.header import Header
 from element.color import MainColors
 from element.font import Font
-#from PyKakao import Local
-from statics.button_theme import large_pill_button_classes, pill_button_classes, pill_button_style
+import json
+
+json_data = '''
+{
+    "title": "약속 제목",
+    "organizer": "언톡",
+    "promise_type": "미정",
+    "location": "부산 금정구 부산대학로83번길 2 (우)46241"
+}
+'''
+
+content_data = json.loads(json_data)
 
 def TimePromiseMapView():
     wp = jp.WebPage()
@@ -13,23 +23,18 @@ def TimePromiseMapView():
     main_colors = MainColors()
     font = Font()
 
-    main_div = jp.Div(classes='flex flex-col', style=f'color: {main_colors.GreyColor}; height: 100vh; margin-left: 40px; margin-right: 40px; margin-top: 20px;', children=[
-        jp.Div(style='margin-bottom: auto;', children=[
-            jp.P(text='제목이 들어갈 공간입니다.', style='line-height: 0.8', classes=f'{font.Heading2_Bold}'), 
-            jp.P(text='주최자: "언톡"', style='line-height: 0.8', classes=f'{font.Heading3_Bold}'), 
-            jp.P(text='약속 종류: "미정"', style='line-height: 0.8', classes=f'{font.Heading3_Bold}')
-        ]),
-        jp.Div(style='display: flex;', children=[
-            jp.Div(style='width: 50%;', children=[
-                jp.P(text='약속 장소 : 부산 금정구 부산대학로83번길 2 (우)46241', style='line-height: 3', classes=f'{font.Heading3_Bold};'),
-                jp.P(text='약속 장소 : 부산 금정구 부산대학로83번길 2 (우)46241', style='line-height: 3', classes=f'{font.Heading3_Bold}')
-            ]),
-            jp.Div(style='width: 50%;', children=[
-                # Add the Kakao Map HTML file
-                jp.Iframe(src='/static/statics/js/map.html', style='height: 500px; width: 100%; border: none;')
-            ])
-        ])
-    ])
+    main_div = jp.Div(classes='flex flex-col', style=f'color: {main_colors.GreyColor}; height: 100vh; margin-left: 40px; margin-right: 40px; margin-top: 20px;')
+    
+    # 타이틀 및 정보 출력
+    jp.P(text=content_data["title"], style='line-height: 0.8', classes=f'{font.Heading2_Bold}', a=main_div)
+    jp.P(text=f'주최자: {content_data["organizer"]}', style='line-height: 0.8', classes=f'{font.Heading3_Bold}', a=main_div)
+    jp.P(text=f'약속 종류: {content_data["promise_type"]}', style='line-height: 0.8', classes=f'{font.Heading3_Bold}', a=main_div)
+
+    # 장소 정보 및 지도 출력
+    location_div = jp.Div(style='display: flex;', a=main_div)
+    jp.Div(text=f'약속 장소: {content_data["location"]}', style='line-height: 3', classes=f'{font.Heading3_Bold}', a=location_div)
+    jp.Iframe(src=f'/static/statics/js/map.html?location={json.dumps(content_data)}', style='height: 500px; width: 50%; border: none;', a=location_div)
+
     wp.add(main_div)
 
     return wp
