@@ -2,7 +2,7 @@ import justpy as jp
 from starlette.responses import HTMLResponse
 
 
-from element.color import MainColors
+from element.color import MainColors    
 from route.route import route
 from view.mainpage_view import MainPageView
 

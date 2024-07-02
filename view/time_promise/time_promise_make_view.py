@@ -1,4 +1,6 @@
 import justpy as jp
+import os
+import json
 from element.color import MainColors
 from element.font import Font
 from element.calendar import CalendarComponent
@@ -59,8 +61,7 @@ class AppointmentPage:
 
             title = jp.P(text='시간을 정해주세요', classes='text-xl font-bold mb-2 text-center')
             description = jp.P(text='요일을 선택할 수 있습니다.', classes='text-gray-600 mb-2 text-center')
-            description2 = jp.P(text='특정 일을 선택할 수도 있습니다.', classes='text-gray-600 mb-4 text-center')
-
+            description2 = jp.P(text='특정 일을 선택할 수도 있습니다.', classes='text-gray-600 mb-2 text-center')
             selection_dropdown = jp.Select(classes='block w-2/3 mx-auto mb-4', style='width: 200px;')
             selection_dropdown.add(jp.Option(text='특정 일 선택', value=''))  # 특정 일 선택 옵션 선택 상태 설정
             selection_dropdown.add(jp.Option(text='요일 선택', value='weekday'))  # 요일 선택 옵션 선택 상태 해제
@@ -75,13 +76,13 @@ class AppointmentPage:
 
         # 이벤트 이름 입력 필드
         event_name_container = jp.Div(classes='flex justify-center mt-10')
-        event_name_input = jp.Input(placeholder='New Event Name',
+        self.event_name_input = jp.Input(placeholder='New Event Name',
                                     classes='block w-1/3 p-2 text-center border rounded',
                                     style='border-width: 2px; border-color: black;')
-        event_name_container.add(event_name_input)
+        event_name_container.add(self.event_name_input)
 
         # 이전 페이지로 이동하는 화살표
-        back_arrow = jp.Div(text='<', classes='cursor-pointer absolute top-20 left-5 ' + self.font.Heading2_Bold)
+        back_arrow = jp.A(text='<', href='/timepromise', classes='cursor-pointer absolute top-20 left-5 ' + self.font.Heading2_Bold)
 
         # 달력과 약속 정보를 담을 컨테이너
         main_container = jp.Div(classes='flex justify-between mt-10', style='width: 80%; margin: 0 auto;')
@@ -117,33 +118,33 @@ class AppointmentPage:
         start_time_container = jp.Div(classes='flex items-center mb-4')
         start_time_container.add(jp.P(text='시작 시간:', classes='mr-2'))
 
-        start_hour_select = jp.Select(classes='block w-1/3')
-        start_hour_select.add(jp.Option(text='09시', value='', disabled=True, selected=True, classes='text-gray-500'))
+        self.start_hour_select = jp.Select(classes='block w-1/3')
+        self.start_hour_select.add(jp.Option(text='09시', value='', disabled=True, selected=True, classes='text-gray-500'))
         for hour in range(9, 24):
-            start_hour_select.add(jp.Option(text=str(hour).zfill(2), value=str(hour).zfill(2)))
-        start_time_container.add(start_hour_select)
+            self.start_hour_select.add(jp.Option(text=str(hour).zfill(2), value=str(hour).zfill(2)))
+        start_time_container.add(self.start_hour_select)
 
-        start_minute_select = jp.Select(classes='block w-1/3 ml-2')
-        start_minute_select.add(jp.Option(text='00분', value='', disabled=True, selected=True, classes='text-gray-500'))
+        self.start_minute_select = jp.Select(classes='block w-1/3 ml-2')
+        self.start_minute_select.add(jp.Option(text='00분', value='', disabled=True, selected=True, classes='text-gray-500'))
         for minute in range(0, 60, 5):
-            start_minute_select.add(jp.Option(text=str(minute).zfill(2), value=str(minute).zfill(2)))
-        start_time_container.add(start_minute_select)
+            self.start_minute_select.add(jp.Option(text=str(minute).zfill(2), value=str(minute).zfill(2)))
+        start_time_container.add(self.start_minute_select)
 
         # 끝나는 시간 선택
         end_time_container = jp.Div(classes='flex items-center mb-4')
         end_time_container.add(jp.P(text='끝나는 시간:', classes='mr-2'))
 
-        end_hour_select = jp.Select(classes='block w-1/3')
-        end_hour_select.add(jp.Option(text='18시', value='', disabled=True, selected=True, classes='text-gray-500'))
+        self.end_hour_select = jp.Select(classes='block w-1/3')
+        self.end_hour_select.add(jp.Option(text='18시', value='', disabled=True, selected=True, classes='text-gray-500'))
         for hour in range(9, 25):
-            end_hour_select.add(jp.Option(text=str(hour).zfill(2), value=str(hour).zfill(2)))
-        end_time_container.add(end_hour_select)
+            self.end_hour_select.add(jp.Option(text=str(hour).zfill(2), value=str(hour).zfill(2)))
+        end_time_container.add(self.end_hour_select)
 
-        end_minute_select = jp.Select(classes='block w-1/3 ml-2')
-        end_minute_select.add(jp.Option(text='00분', value='', disabled=True, selected=True, classes='text-gray-500'))
+        self.end_minute_select = jp.Select(classes='block w-1/3 ml-2')
+        self.end_minute_select.add(jp.Option(text='00분', value='', disabled=True, selected=True, classes='text-gray-500'))
         for minute in range(0, 60, 5):
-            end_minute_select.add(jp.Option(text=str(minute).zfill(2), value=str(minute).zfill(2)))
-        end_time_container.add(end_minute_select)
+            self.end_minute_select.add(jp.Option(text=str(minute).zfill(2), value=str(minute).zfill(2)))
+        end_time_container.add(self.end_minute_select)
 
         appointment_info_div.add(start_time_container)
         appointment_info_div.add(end_time_container)
@@ -171,7 +172,9 @@ class AppointmentPage:
         appointment_info_div.add(self.appointment_type_select)
 
         # 약속 추가 버튼
-        appointment_info_div.add(jp.Button(text='약속 추가', classes='bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded mt-4'))
+        add_appointment_button = jp.Button(text='약속 추가', classes='bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded mt-4')
+        add_appointment_button.on('click', self.save_appointment)
+        appointment_info_div.add(add_appointment_button)
 
         # right_container에 약속 멘트 div와 약속 정보 div 추가
         right_container.add(appointment_ment_div, appointment_info_div)
@@ -206,12 +209,53 @@ class AppointmentPage:
                 self.custom_place_input = None
             self.appointment_place_select.set_class('block')
 
-    # 이전 페이지로 돌아가는 함수
-    def go_back(self, msg):
-        jp.redirect('/timepromise')
+    # 약속 정보를 저장하는 함수
+    def save_appointment(self, msg):
+        event_name = self.event_name_input.value
+        start_hour = self.start_hour_select.value
+        start_minute = self.start_minute_select.value
+        end_hour = self.end_hour_select.value
+        end_minute = self.end_minute_select.value
+        place = self.appointment_place_select.value
+        appointment_type = self.appointment_type_select.value
+        
+        appointment_data = {
+            'event_name': event_name,
+            'start_time': f"{start_hour}:{start_minute}",
+            'end_time': f"{end_hour}:{end_minute}",
+            'place': place,
+            'appointment_type': appointment_type
+        }
+
+        # JSON 파일에 저장
+        file_path = 'data/appointments.json'
+        if os.path.exists(file_path):
+            with open(file_path, 'r') as file:
+                data = json.load(file)
+        else:
+            data = []
+
+        data.append(appointment_data)
+        with open(file_path, 'w') as file:
+            json.dump(data, file, indent=4)
+
+        jp.run_task(self.show_success_message(msg))
+
+    async def show_success_message(self, msg):
+        # 성공 메시지를 보여줌
+        success_message = jp.Div(
+            text='약속이 성공적으로 추가되었습니다!',
+            classes='bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative',
+            a=msg.page
+        )
+        await jp.run_task(self.remove_success_message(success_message))
+
+    async def remove_success_message(self, message):
+        # 3초 후 메시지를 삭제함
+        await jp.sleep(3)
+        message.delete()
 
 def TimePromiseMakeView():
     appointment_page = AppointmentPage()
     return appointment_page.appointment_page()
-
 
