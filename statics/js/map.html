@@ -1,17 +1,56 @@
 <!DOCTYPE html>
-<html>
+<html lang="ko">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=3dbd8f6d66d42871f15ad815d98c6d13"></script>
+    <style>
+        #map {
+            width: 100%;
+            height: 400px;
+        }
+    </style>
 </head>
 <body>
-    <div id="map" style="width:100%;height:500px;"></div>
-    <script type="text/javascript">
-        var container = document.getElementById('map');
-        var options = {
-            center: new kakao.maps.LatLng(35.23099786583028, 129.08224863853246),
-            level: 3
-        };
-        var map = new kakao.maps.Map(container, options);
+    <div id="map"></div>
+
+    <script>
+        // JSON 데이터에서 location 정보 받아오기
+        var jsonLocation = decodeURIComponent(window.location.search.replace(/^.*?\=/, ''));
+        
+        // JSON 형식의 문자열을 객체로 변환
+        var locationData = JSON.parse(jsonLocation);
+
+        // 카카오 맵 API 초기화
+        kakao.maps.load(function() {
+            // 지도 생성 및 특정 위치 설정
+            var container = document.getElementById('map');
+            var options = {
+                center: new kakao.maps.LatLng(35.23099786583028, 129.08224863853246),  // 기본 위치 설정 (부산대학교)
+                level: 3  // 지도 확대 레벨 (1부터 14까지 숫자가 클수록 확대)
+            };
+            var map = new kakao.maps.Map(container, options);
+
+            // 주소로 좌표를 검색합니다.
+            var geocoder = new kakao.maps.services.Geocoder();
+            geocoder.addressSearch(locationData.location, function(result, status) {
+                // 정상적으로 검색이 완료됐으면
+                if (status === kakao.maps.services.Status.OK) {
+                    var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+
+                    // 마커 생성 및 설정
+                    var marker = new kakao.maps.Marker({
+                        map: map,
+                        position: coords
+                    });
+
+                    // 마커를 지도 중심으로 설정
+                    map.setCenter(coords);
+                } else {
+                    alert('주소를 찾을 수 없습니다.');
+                }
+            });
+        });
     </script>
 </body>
 </html>
