@@ -33,6 +33,9 @@ json_data = '''
 # JSON 데이터를 파싱하여 selected_times 초기화
 selected_times = json.loads(json_data)
 
+with open('data/location.json', 'r', encoding='utf-8') as file:
+        location_data = json.load(file)[0]
+
 # 색상 설정 함수
 def get_color(count):
     if count == 0:
@@ -49,9 +52,9 @@ def TimePromiseDetailView():
     header = Header("/timepromise/{time_promise_id}")
     header.show_header(wp)
     
-    headerline = jp.Div(a=wp, text="제목이 들어갈 공간입니다.", style="color: gray; font-size: 26px; font-weight: bold; margin-top: 30px; margin-left:30px")
-    sub_header = jp.Div(a=wp, text="주최자: ""언톡""", style="color: gray; font-size: 20px; font-weight: bold; margin-left:30px")
-    sub_sub_header = jp.Div(a=wp, text="약속 종류: 미정", style="color: gray; font-size: 20px; font-weight: bold; margin-left:30px")
+    headerline = jp.Div(a=wp, text=location_data["title"], style="color: gray; font-size: 26px; font-weight: bold; margin-top: 30px; margin-left:30px")
+    sub_header = jp.Div(a=wp, text=f'주최자: {location_data["organizer"]}', style="color: gray; font-size: 20px; font-weight: bold; margin-left:30px")
+    sub_sub_header = jp.Div(a=wp, text=f'약속 종류: {location_data["promise_type"]}', style="color: gray; font-size: 20px; font-weight: bold; margin-left:30px")
     
     
     # 전체 컨테이너
