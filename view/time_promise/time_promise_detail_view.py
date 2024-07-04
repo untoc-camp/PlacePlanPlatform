@@ -21,6 +21,9 @@ date_index = 0  # 현재 날짜 범위의 시작 인덱스
 # 사용자가 선택한 시간을 저장할 딕셔너리
 user_selected_times = {}
 
+with open('data/location.json', 'r', encoding='utf-8') as file:
+        location_data = json.load(file)[0]
+
 # 색상 설정 함수
 def get_color(count):
     if count == 0:
@@ -171,7 +174,7 @@ def TimePromiseDetailView():
     headerline = jp.Div(a=wp, text=data['title'], style="color: #5C5F64; font-size: 30px; font-weight: bold; margin-top: 30px; margin-left:65px")
     sub_header = jp.Div(a=wp, text=f"주최자: {data['host']}", style="color: #5C5F64; font-size: 24px; font-weight: bold; margin-left:65px")
     sub_sub_header = jp.Div(a=wp, text=f"약속 종류: {data['type']}", style="color: #5C5F64; font-size: 24px; font-weight: bold; margin-left:65px")
-    
+
     # 전체 컨테이너
     container = jp.Div(a=wp, classes="flex flex-row justify-start", style="margin-top: 50px; margin-left: 100px; gap: 50px;")
 
