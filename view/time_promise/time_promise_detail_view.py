@@ -1,5 +1,7 @@
 import justpy as jp
 from element.header import Header
+from element.color import MainColors
+from element.font import Font
 import json
 from datetime import datetime, timedelta
 
@@ -169,6 +171,9 @@ def TimePromiseDetailView():
     wp = jp.WebPage()
     header = Header("/timepromise/{time_promise_id}")
     header.show_header(wp)
+
+    main_colors = MainColors()
+    font = Font()
     
     # 제목, 주최자, 약속 종류를 JSON 데이터에서 불러와서 표시
     headerline = jp.Div(a=wp, text=data['title'], style="color: #5C5F64; font-size: 30px; font-weight: bold; margin-top: 30px; margin-left:65px")
@@ -244,5 +249,10 @@ def TimePromiseDetailView():
     apply_button.table = table
     apply_button.container_right = container_right
     apply_button.on('click', apply_selected_times)
+    jp.Div(text=f'약속 장소: {location_data["location"]}', style='line-height: 3', classes=f'{font.Heading3_Bold}', a=container_right)
+
+    # 장소 정보 및 지도 출력
+    location_div = jp.Div(style='display: flex; width: 100%;', a=container_right)
+    jp.Iframe(src=f'/static/statics/js/map.html?location={jp.quote(json.dumps(location_data))}', style='height: 500px; width: 100%; border: none;', a=location_div)
 
     return wp
