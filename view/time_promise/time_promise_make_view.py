@@ -11,11 +11,11 @@ class AppointmentPage:
         self.color = MainColors()
         self.font = Font()
         self.calendar = CalendarComponent()
-        self.custom_place_input = None  # 직접 작성 입력란을 저장할 변수 (장소)
-        self.custom_type_input = None  # 직접 작성 입력란을 저장할 변수 (약속 종류)
         self.appointment_place_select = None  # 약속 장소 선택란을 저장할 변수
         self.appointment_type_select = None  # 약속 종류 선택란을 저장할 변수
         self.calendar_div = jp.Div(classes='w-1/3 bg-white-100 p-4 rounded-md')
+        self.place_input = None
+        self.type_input = None
 
     def toggle_color(self, msg):
         if 'bg-blue-500' in msg.target.classes:
@@ -77,8 +77,8 @@ class AppointmentPage:
         # 이벤트 이름 입력 필드
         event_name_container = jp.Div(classes='flex justify-center mt-10')
         self.event_name_input = jp.Input(placeholder='New Event Name',
-                                    classes='block w-1/3 p-2 text-center border rounded',
-                                    style='border-width: 2px; border-color: black;')
+                                         classes='block w-1/3 p-2 text-center border rounded',
+                                         style='border-width: 2px; border-color: black;')
         event_name_container.add(self.event_name_input)
 
         # 이전 페이지로 이동하는 화살표
@@ -88,7 +88,6 @@ class AppointmentPage:
         main_container = jp.Div(classes='flex justify-between mt-10', style='width: 80%; margin: 0 auto;')
 
         # 달력을 담을 div
-
         title = jp.P(text='시간을 정해주세요', classes='text-xl font-bold mb-2 text-center')
         description = jp.P(text='요일을 선택할 수 있습니다.', classes='text-gray-600 mb-2 text-center')
         description2 = jp.P(text='특정 일을 선택할 수도 있습니다.', classes='text-gray-600 mb-4 text-center')
@@ -151,25 +150,36 @@ class AppointmentPage:
 
         # 지역 선택
         appointment_info_div.add(jp.P(text='지역 선택:', classes='mt-4'))
-        self.appointment_place_select = jp.Select(classes='block w-full mt-2 mb-4', change=self.show_custom_place_input)
+        self.appointment_place_select = jp.Select(classes='block w-full mt-2 mb-4')
         self.appointment_place_select.add(jp.Option(text='장소 선택하세요', value='', disabled=True, selected=True, classes='text-gray-500'))
         self.appointment_place_select.add(jp.Option(text='부산대', value='부산대'))
         self.appointment_place_select.add(jp.Option(text='서면', value='서면'))
         self.appointment_place_select.add(jp.Option(text='광안리', value='광안리'))
         self.appointment_place_select.add(jp.Option(text='남포', value='남포'))
-        self.appointment_place_select.add(jp.Option(text='직접 작성', value='직접 작성'))
+        self.appointment_place_select.add(jp.Option(text='기타', value='기타'))
+
+        # 지역 선택 후
+        self.place_input = jp.Input(type='text', classes='block w-full mt-2 mb-4', placeholder='추가 장소 정보를 입력하세요')
+        
         appointment_info_div.add(self.appointment_place_select)
+        appointment_info_div.add(self.place_input)
 
         # 약속 종류 선택
         appointment_info_div.add(jp.P(text='약속 종류:', classes='mt-4'))
-        self.appointment_type_select = jp.Select(classes='block w-full mt-2 mb-4', change=self.show_custom_type_input)
+        self.appointment_type_select = jp.Select(classes='block w-full mt-2 mb-4')
         self.appointment_type_select.add(jp.Option(text='종류를 선택하세요', value='', disabled=True, selected=True, classes='text-gray-500'))
-        self.appointment_type_select.add(jp.Option(text='미정', value='미정'))
         self.appointment_type_select.add(jp.Option(text='밥약속', value='밥약속'))
         self.appointment_type_select.add(jp.Option(text='술약속', value='술약속'))
         self.appointment_type_select.add(jp.Option(text='회의', value='회의'))
-        self.appointment_type_select.add(jp.Option(text='직접 작성', value='직접 작성'))
+        self.appointment_type_select.add(jp.Option(text='기타', value='기타'))
+
         appointment_info_div.add(self.appointment_type_select)
+
+        # 약속 종류 선택 후
+        self.type_input = jp.Input(type='text', classes='block w-full mt-2 mb-4', placeholder='추가 약속 정보를 입력하세요')
+
+        appointment_info_div.add(self.type_input)
+
 
         # 약속 추가 버튼
         add_appointment_button = jp.Button(text='약속 추가', classes='bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded mt-4')
@@ -183,32 +193,6 @@ class AppointmentPage:
         wp.add(event_name_container, back_arrow, main_container)
         return wp
 
-    # 약속 종류 선택 시 직접 작성 입력란을 보여줌
-    def show_custom_type_input(self, msg):
-        if msg.value == '직접 작성':
-            self.appointment_type_select.set_class('hidden')
-            if not self.custom_type_input:
-                self.custom_type_input = jp.Input(type='text', classes='block w-full mt-2', placeholder='약속 종류를 입력하세요')
-                msg.target.add(self.custom_type_input)  # 선택한 요소의 부모 요소에 추가
-        else:
-            if self.custom_type_input:
-                self.custom_type_input.delete()
-                self.custom_type_input = None
-            self.appointment_type_select.set_class('block')
-
-    # 지역 선택 시 직접 작성 입력란을 보여줌
-    def show_custom_place_input(self, msg):
-        if msg.value == '직접 작성':
-            self.appointment_place_select.set_class('hidden')
-            if not self.custom_place_input:
-                self.custom_place_input = jp.Input(type='text', classes='block w-full mt-2', placeholder='지역을 입력하세요')
-                msg.target.add(self.custom_place_input)  # 선택한 요소의 부모 요소에 추가
-        else:
-            if self.custom_place_input:
-                self.custom_place_input.delete()
-                self.custom_place_input = None
-            self.appointment_place_select.set_class('block')
-
     # 약속 정보를 저장하는 함수
     def save_appointment(self, msg):
         event_name = self.event_name_input.value
@@ -217,45 +201,73 @@ class AppointmentPage:
         end_hour = self.end_hour_select.value
         end_minute = self.end_minute_select.value
         place = self.appointment_place_select.value
+        place_detail = self.place_input.value
         appointment_type = self.appointment_type_select.value
-        
+        type_detail = self.type_input.value
+
+        # 필수 필드 확인
+        if not all([event_name, start_hour, start_minute, end_hour, end_minute, place, appointment_type]):
+            jp.run_task(self.show_warning_message(msg, "모든 필수 항목을 입력해주세요."))
+            return
+
+        # 약속 정보를 JSON 형식으로 저장
         appointment_data = {
             'event_name': event_name,
             'start_time': f"{start_hour}:{start_minute}",
             'end_time': f"{end_hour}:{end_minute}",
             'place': place,
-            'appointment_type': appointment_type
+            'place_detail': place_detail,
+            'appointment_type': appointment_type,
+            'type_detail': type_detail
         }
+
+       
 
         # JSON 파일에 저장
         file_path = 'data/appointments.json'
-        if os.path.exists(file_path):
-            with open(file_path, 'r') as file:
-                data = json.load(file)
-        else:
+        try:
             data = []
+            if os.path.exists(file_path):
+                try:
+                    with open(file_path, 'r', encoding='utf-8') as file:
+                        data = json.load(file)
+                except UnicodeDecodeError:
+                    # UTF-8로 읽기 실패시 cp949로 시도
+                    with open(file_path, 'r', encoding='cp949') as file:
+                        data = json.load(file)
 
-        data.append(appointment_data)
-        with open(file_path, 'w') as file:
-            json.dump(data, file, indent=4)
+            data.append(appointment_data)
+            with open(file_path, 'w', encoding='utf-8') as file:
+                json.dump(data, file, indent=4, ensure_ascii=False)
 
-        jp.run_task(self.show_success_message(msg))
+            jp.run_task(self.show_success_message(msg))
+        except Exception as e:
+            error_message = f"약속 저장 중 오류 발생: {str(e)}"
+            print(error_message)  # 콘솔에 오류 출력
+            jp.run_task(self.show_warning_message(msg, error_message))
+            
 
     async def show_success_message(self, msg):
-        # 성공 메시지를 보여줌
         success_message = jp.Div(
             text='약속이 성공적으로 추가되었습니다!',
             classes='bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative',
             a=msg.page
         )
-        await jp.run_task(self.remove_success_message(success_message))
+        await jp.run_task(self.remove_message(success_message))
+    async def show_warning_message(self, msg, warning_text):
+        warning_message = jp.Div(
+            text=warning_text,
+            classes='bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative',
+            a=msg.page
+        )
+        await jp.run_task(self.remove_message(warning_message))
 
-    async def remove_success_message(self, message):
-        # 3초 후 메시지를 삭제함
+
+    async def remove_message(self, message):
         await jp.sleep(3)
         message.delete()
+
 
 def TimePromiseMakeView():
     appointment_page = AppointmentPage()
     return appointment_page.appointment_page()
-

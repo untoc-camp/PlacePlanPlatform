@@ -56,7 +56,7 @@ class AppointmentApp:
         # 버튼 컨테이너 추가
         button_container = jp.Div(classes="flex justify-between items-center mt-4", a=appointment_div)
         
-        jp.A(text='일정 수정하기', href='/timepromise/make', classes='bg-blue-100 hover:bg-blue-200 text-blue-800 text-sm py-1 px-3 rounded-full', a=button_container)
+        jp.A(text='일정 수정하기', href='/timepromise/123', classes='bg-blue-100 hover:bg-blue-200 text-blue-800 text-sm py-1 px-3 rounded-full', a=button_container)
 
         delete_button = jp.Button(text="삭제", classes="bg-red-100 hover:bg-red-200 text-red-800 text-sm py-1 px-3 rounded-full", a=button_container)
         delete_button.on('click', self.delete_appointment)
